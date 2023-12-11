@@ -1,0 +1,41 @@
+%
+% Copyright (C) 2023 Yukimasa Morimi (h20y6m)
+%
+
+\ifdefined\documentclass
+  \input{regression-test.tex}
+  \documentclass{minimal}
+  \usepackage{biguint}
+\else
+  \input regression-test.tex\relax
+  \input biguint-generic.tex\relax
+\fi
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation , log-functions }
+\ExplSyntaxOff
+
+\START
+\ExplSyntaxOn
+
+\TEST { biguint_set }
+  {
+    \biguint_set:Nn \l_test_biguint { "123 }
+    \biguint_set:Nn \l_tmpa_biguint { "123 }
+    \biguint_set:Nn \l_tmpb_biguint { 123 }
+    {
+      \biguint_gset:Nn \g_tmpa_biguint { "123 }
+      \biguint_gset:Nn \g_tmpb_biguint { 123 }
+      \biguint_set:Nn \l_tmpa_biguint { "234 }
+      \biguint_set:Nn \l_tmpb_biguint { 234 }
+      \biguint_log:N \l_tmpa_biguint
+      \biguint_log:N \l_tmpb_biguint
+    }
+    \biguint_log:N \l_tmpa_biguint
+    \biguint_log:N \l_tmpb_biguint
+    \biguint_log:N \g_tmpa_biguint
+    \biguint_log:N \g_tmpb_biguint
+  }
+
+\ExplSyntaxOff
+\END

@@ -1,0 +1,3028 @@
+% \iffalse meta-comment
+%
+%% File: biguint.dtx
+%
+%  Copyright (c) 2023 Yukimasa Morimi (h20y6m)
+%
+%<*driver>
+\documentclass[full]{l3doc}
+\begin{document}
+  \DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \title{^^A
+%   The \textsf{biguint} package\\ Big unsigned integer^^A
+% }
+%
+% \author{^^A
+%  Yukimasa Morimi (h20y6m)\thanks
+%    {^^A
+%      GitHub:
+%        \url{https://github.com/h20y6m}^^A
+%    }^^A
+% }
+%
+% \date{Released 2023-12-11}
+%
+% \maketitle
+%
+% \begin{documentation}
+%
+% This package provaides big unsigned integers.
+%
+% \section{Creating and initialising big unsigned integers}
+%
+% \begin{function}
+%   {\biguint_new:N, \biguint_new:c}
+%   \begin{syntax}
+%     \cs{biguint_new:N} \meta{biguint~var}
+%   \end{syntax}
+%   Creates a new \meta{biguint~var} or raises an error if the name is
+%   already taken. The declaration is global. The \meta{biguint~var}
+%   is initially equal to~$0$.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_const:Nn, \biguint_const:cn,
+%     \biguint_const:Ne, \biguint_const:ce,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_const:Nn} \meta{biguint~var} \Arg{uint repr}
+%   \end{syntax}
+%   Creates a new constant \meta{biguint~var} or raises an error if
+%   the name is already taken. The \meta{biguint~var} is set globally
+%   equal to the \meta{uint repr}.
+%   \begin{texnote}
+%     Converting from decimal number is several times
+%     slower than converting from hexadecimal number.
+%   \end{texnote}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_zero:N, \biguint_zero:c,
+%     \biguint_gzero:N, \biguint_gzero:c,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_zero:N} \meta{biguint~var}
+%   \end{syntax}
+%   Sets the \meta{biguint~var} to~$0$.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_zero_new:N, \biguint_zero_new:c,
+%     \biguint_gzero_new:N, \biguint_gzero_new:c,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_zero_new:N} \meta{biguint~var}
+%   \end{syntax}
+%   Ensures that the \meta{biguint~var} exists globally by applying
+%   \cs{biguint_new:N} if necessary, then applies
+%   \cs[index=biguint_zero_new:N]{biguint_(g)zero_new:N} to leave the
+%   \meta{biguint~var} set to~$0$.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_set_eq:NN, \biguint_set_eq:cN,
+%     \biguint_set_eq:Nc, \biguint_set_eq:cc,
+%     \biguint_gset_eq:NN, \biguint_gset_eq:cN,
+%     \biguint_gset_eq:Nc, \biguint_gset_eq:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_set_eq:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Sets the content of \meta{biguint~var_1} equal to that of
+%   \meta{biguint~var_2}.
+% \end{function}
+%
+% \begin{function}[EXP, pTF]
+%   {\biguint_if_exist:N, \biguint_if_exist:c}
+%   \begin{syntax}
+%     \cs{biguint_if_exist_p:N} \meta{biguint~var}
+%     \cs{biguint_if_exist:NTF} \meta{biguint~var} \Arg{true code} \Arg{false code}
+%   \end{syntax}
+%   Tests whether the \meta{biguint~var} is currently defined. The
+%   dose not check that the \meta{biguint~var} really is a big unsigned
+%   integer variable.
+% \end{function}
+%
+% \section{Setting and updating big unsigned integers}
+%
+% \begin{function}
+%   {
+%     \biguint_set:Nn, \biguint_set:cn,
+%     \biguint_set:Ne, \biguint_set:ce,
+%     \biguint_gset:Nn, \biguint_gset:cn,
+%     \biguint_gset:Ne, \biguint_gset:ce,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_set:Nn} \meta{biguint~var} \Arg{uint repr}
+%   \end{syntax}
+%   Sets \meta{biguint~var} to the value of \meta{uint repr}, which a
+%   decimal number or a hexadecimal number preceded by double quotes.
+%   \begin{texnote}
+%     Converting from decimal number is several times
+%     slower than converting from hexadecimal number.
+%   \end{texnote}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_add:NN, \biguint_add:cN,
+%     \biguint_add:Nc, \biguint_add:cc,
+%     \biguint_gadd:NN, \biguint_gadd:cN,
+%     \biguint_gadd:Nc, \biguint_gadd:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_add:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Adds the \meta{biguint~var_2} to the current content of the
+%   \meta{biguint~var_1}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_add:NNN, \biguint_add:ccc,
+%     \biguint_gadd:NNN, \biguint_gadd:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_add:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Set the \meta{biguint~var_1} to the result of adding the
+%   \meta{biguint~var_2} and the \meta{biguint~var_3}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_sub:NN, \biguint_sub:cN,
+%     \biguint_sub:Nc, \biguint_sub:cc,
+%     \biguint_gsub:NN, \biguint_gsub:cN,
+%     \biguint_gsub:Nc, \biguint_gsub:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_sub:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Subtracts the \meta{biguint~var_2} from the current content of the
+%   \meta{biguint~var_1}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_sub:NNN, \biguint_sub:ccc,
+%     \biguint_gsub:NNN, \biguint_gsub:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_sub:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Set the \meta{biguint~var_1} to the result of subtracting the
+%   \meta{biguint~var_3} from the \meta{biguint~var_2}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_mul:NN, \biguint_mul:cN,
+%     \biguint_mul:Nc, \biguint_mul:cc,
+%     \biguint_gmul:NN, \biguint_gmul:cN,
+%     \biguint_gmul:Nc, \biguint_gmul:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_mul:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Multiplies the current content of the \meta{biguint~var_1} by
+%   the \meta{biguint~var_2}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_mul:NNN, \biguint_mul:ccc,
+%     \biguint_gmul:NNN, \biguint_gmul:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_mul:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Set the \meta{biguint~var_1} to the result of multipling the
+%   \meta{biguint~var_2} by the \meta{biguint~var_3}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_bitand:NN, \biguint_bitand:cN,
+%     \biguint_bitand:Nc, \biguint_bitand:cc,
+%     \biguint_gbitand:NN, \biguint_gbitand:cN,
+%     \biguint_gbitand:Nc, \biguint_gbitand:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_bitand:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Updates the \meta{biguint~var_1} by the result of bitwise AND
+%   operation between the \meta{biguint~var_1} and \meta{biguint~var_2}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_bitand:NNN, \biguint_bitand:ccc,
+%     \biguint_gbitand:NNN, \biguint_gbitand:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_bitand:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Updates the \meta{biguint~var_1} by the result of bitwise AND
+%   operation between the \meta{biguint~var_2} and \meta{biguint~var_3}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_bitor:NN, \biguint_bitor:cN,
+%     \biguint_bitor:Nc, \biguint_bitor:cc,
+%     \biguint_gbitor:NN, \biguint_gbitor:cN,
+%     \biguint_gbitor:Nc, \biguint_gbitor:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_bitor:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Updates the \meta{biguint~var_1} by the result of bitwise OR
+%   operation between the \meta{biguint~var_1} and \meta{biguint~var_2}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_bitor:NNN, \biguint_bitor:ccc,
+%     \biguint_gbitor:NNN, \biguint_gbitor:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_bitor:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Updates the \meta{biguint~var_1} by the result of bitwise OR
+%   operation between the \meta{biguint~var_2} and \meta{biguint~var_3}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_bitxor:NN, \biguint_bitxor:cN,
+%     \biguint_bitxor:Nc, \biguint_bitxor:cc,
+%     \biguint_gbitxor:NN, \biguint_gbitxor:cN,
+%     \biguint_gbitxor:Nc, \biguint_gbitxor:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_bitxor:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Updates the \meta{biguint~var_1} by the result of bitwise XOR
+%   operation between the \meta{biguint~var_1} and \meta{biguint~var_2}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_bitxor:NNN, \biguint_bitxor:ccc,
+%     \biguint_gbitxor:NNN, \biguint_gbitxor:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_bitxor:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Updates the \meta{biguint~var_1} by the result of bitwise XOR
+%   operation between the \meta{biguint~var_2} and \meta{biguint~var_3}.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_shl:NN, \biguint_shl:cN,
+%     \biguint_shl:Nc, \biguint_shl:cc,
+%     \biguint_gshl:NN, \biguint_gshl:cN,
+%     \biguint_gshl:Nc, \biguint_gshl:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_shl:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Updates the current value of \meta{biguint~var_1} by left-shifting
+%   the of \meta{biguint~var_2} bits.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_shl:NNN, \biguint_shl:ccc,
+%     \biguint_gshl:NNN, \biguint_gshl:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_shl:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Update \meta{biguint~var_1} with the result of left-shifting
+%   \meta{biguint~var_2} by \meta{biguint~var_3} bits.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_shr:NN, \biguint_shr:cN,
+%     \biguint_shr:Nc, \biguint_shr:cc,
+%     \biguint_gshr:NN, \biguint_gshr:cN,
+%     \biguint_gshr:Nc, \biguint_gshr:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_shr:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%   \end{syntax}
+%   Updates the current value of \meta{biguint~var_1} by right-shifting
+%   the of \meta{biguint~var_2} bits.
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \biguint_shr:NNN, \biguint_shr:ccc,
+%     \biguint_gshr:NNN, \biguint_gshr:ccc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_shr:NNN} \meta{biguint~var_1} \meta{biguint~var_2} \meta{biguint~var_3}
+%   \end{syntax}
+%   Update \meta{biguint~var_1} with the result of right-shifting
+%   \meta{biguint~var_2} by \meta{biguint~var_3} bits.
+% \end{function}
+%
+% \section{Using big unsigned integers}
+%
+% \begin{function}[EXP]
+%   {\biguint_to_decimal:N, \biguint_to_decimal:c}
+%   \begin{syntax}
+%     \cs{biguint_to_decimal:N} \meta{biguint~var}
+%   \end{syntax}
+%   Inserts the value of the \meta{biguint~var} into the input stream
+%   as a decimal number.
+% \end{function}
+%
+% \begin{function}[EXP]
+%   {\biguint_to_Hex:N, \biguint_to_Hex:c}
+%   \begin{syntax}
+%     \cs{biguint_to_Hex:N} \meta{biguint~var}
+%   \end{syntax}
+%   Inserts the value of the \meta{biguint~var} into the input stream
+%   as a hexadecimal number.
+% \end{function}
+%
+% \begin{function}[EXP]
+%   {\biguint_to_tl:N, \biguint_to_tl:c}
+%   \begin{syntax}
+%     \cs{biguint_to_tl:N} \meta{biguint~var}
+%   \end{syntax}
+%   Inserts the value of the \meta{biguint~var} into the input stream
+%   as a hexadecimal number with leading quote (|"|).
+% \end{function}
+%
+% \begin{function}[EXP]
+%   {\biguint_use:N, \biguint_use:c}
+%   \begin{syntax}
+%     \cs{biguint_use:N} \meta{biguint~var}
+%   \end{syntax}
+%   Inserts the value of the \meta{biguint~var} into the input stream
+%   as a decimal number. This function is identical to
+%   \cs{biguint_to_decimal:N}.
+% \end{function}
+%
+% \section{Big unsigned integer conditionals}
+%
+% \begin{function}[EXP, pTF]
+%   {\biguint_if_zero:N, \biguint_if_zero:c}
+%   \begin{syntax}
+%     \cs{biguint_if_zero_p:N} \meta{biguint~var}
+%     \cs{biguint_if_zero:NTF} \meta{biguint~var} \Arg{true code} \Arg{false code}
+%   \end{syntax}
+%   Evaluates if \meta{biguint~var} is zero or not.
+% \end{function}
+%
+% \begin{function}[EXP, pTF]
+%   {
+%     \biguint_if_odd:N, \biguint_if_odd:c,
+%     \biguint_if_even:N, \biguint_if_even:c,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_if_odd_p:N} \meta{biguint~var}
+%     \cs{biguint_if_odd:NTF} \meta{biguint~var} \Arg{true code} \Arg{false code}
+%   \end{syntax}
+%   Evaluates if \meta{biguint~var} is odd or even.
+% \end{function}
+%
+% \begin{function}[EXP, pTF]
+%   {
+%     \biguint_if_eq:NN, \biguint_if_eq:cN,
+%     \biguint_if_eq:Nc, \biguint_if_eq:cc,
+%     \biguint_if_lt:NN, \biguint_if_lt:cN,
+%     \biguint_if_lt:Nc, \biguint_if_lt:cc,
+%     \biguint_if_gt:NN, \biguint_if_gt:cN,
+%     \biguint_if_gt:Nc, \biguint_if_gt:cc,
+%   }
+%   \begin{syntax}
+%     \cs{biguint_if_eq_p:NN} \meta{biguint~var_1} \meta{biguint~var_2}
+%     \cs{biguint_if_eq:NNTF} \meta{biguint~var_1} \meta{biguint~var_2} \Arg{true code} \Arg{false code}
+%   \end{syntax}
+%   Evaluates if \meta{biguint~var} is equal or less than or greater than.
+% \end{function}
+%
+% \section{Viewing big unsigned integers}
+%
+% \begin{function}
+%   {\biguint_show:N, \biguint_show:c}
+%   \begin{syntax}
+%     \cs{biguint_show:N} \meta{biguint~var}
+%   \end{syntax}
+%   Displays the value of the \meta{biguint~var} on the terminal.
+% \end{function}
+%
+% \begin{function}
+%   {\biguint_log:N, \biguint_log:c}
+%   \begin{syntax}
+%     \cs{biguint_log:N} \meta{biguint~var}
+%   \end{syntax}
+%   Writes the value of the \meta{biguint~var} on the log file.
+% \end{function}
+%
+% \section{Constant big unsigned integers}
+%
+% \begin{variable}
+%   {\c_zero_biguint}
+%   Zero.
+% \end{variable}
+%
+% \begin{variable}
+%   {\c_one_biguint}
+%   One.
+% \end{variable}
+%
+% \begin{variable}
+%   {\c_maxint_biguint}
+%   |\c_max_int|.
+% \end{variable}
+%
+% \section{Scratch big unsigned integers}
+%
+% \begin{variable}
+%   {\l_tmpa_biguint,\l_tmpb_biguint}
+%   Scratch big unsigned integer for local assigment.
+% \end{variable}
+%
+% \begin{variable}
+%   {\g_tmpa_biguint,\g_tmpb_biguint}
+%   Scratch big unsigned integer for global assigment.
+% \end{variable}
+%
+% \end{documentation}
+%
+% \begin{implementation}
+%
+% \section{\pkg{biguint} Implementation}
+%
+% \LaTeX{} package.
+%    \begin{macrocode}
+%<*package>
+\RequirePackage{expl3}
+\ProvidesExplPackage{biguint}{2023-12-11}{}
+  {Big unsigned integer}
+\file_input:n { biguint-code.tex }
+%</package>
+%    \end{macrocode}
+%
+% generic.
+%    \begin{macrocode}
+%<*generic>
+\begingroup
+  \expandafter\ifx\csname RequirePackage\endcsname\relax\else
+    \endgroup
+    \RequirePackage{biguint}\relax
+    \expandafter\endinput
+  \fi
+\endgroup
+\input expl3-generic.tex
+\ExplSyntaxOn
+\file_input:n { biguint-code.tex }
+\ExplSyntaxOff
+%</generic>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*code>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<@@=biguint>
+%    \end{macrocode}
+%
+% \begin{macro}{\q_@@}
+%    \begin{macrocode}
+\quark_new:N \q_@@
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\s_@@}
+%    \begin{macrocode}
+\scan_new:N \s_@@
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_chk:w}
+%    \begin{macrocode}
+\cs_new_protected:Npn \@@_chk:w #1 * ;
+  { \msg_error:nnn { biguint } { misused } {#1} }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \c_zero_biguint,
+%     \c_one_biguint,
+%   }
+%   Constants.
+%    \begin{macrocode}
+\tl_const:Nn \c_zero_biguint { \s_@@ \@@_chk:w 0 * ; }
+\tl_const:Nn \c_one_biguint  { \s_@@ \@@_chk:w 1 * ; }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsection{Internal conditionals}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_if_zero_p:n, \@@_if_zero_p:o, \@@_if_zero_p:f,
+%   }
+%   Tests big unsigned integer is zero.
+%    \begin{macrocode}
+\cs_new:Npn \@@_if_zero_p:n #1
+  { \@@_if_zero_p:w #1 }
+\cs_generate_variant:Nn \@@_if_zero_p:n { o , f }
+\cs_new:Npn \@@_if_zero_p:w \s_@@ \@@_chk:w #1 #2 ;
+  {
+    \if_meaning:w 0 #1
+      \if_meaning:w * #2
+        \exp_after:wN \exp_after:wN \exp_after:wN \c_true_bool
+      \else:
+        \exp_after:wN \exp_after:wN \exp_after:wN \c_false_bool
+      \fi:
+    \else:
+      \exp_after:wN \c_false_bool
+    \fi:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_if_odd_p:n , \@@_if_odd_p:o , \@@_if_odd_p:f ,
+%     \@@_if_even_p:n, \@@_if_even_p:o, \@@_if_even_p:f,
+%   }
+%   Tests big unsigned integer is odd or even.
+%    \begin{macrocode}
+\cs_new:Npn \@@_if_odd_p:n #1
+  { \@@_if_odd_p:w #1 }
+\cs_generate_variant:Nn \@@_if_odd_p:n { o , f }
+\cs_new:Npn \@@_if_odd_p:w \s_@@ \@@_chk:w #1 #2 ;
+  {
+    \if_int_odd:w "#1 \exp_stop_f:
+      \exp_after:wN \c_true_bool
+    \else:
+      \exp_after:wN \c_false_bool
+    \fi:
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_if_even_p:n #1
+  { \@@_if_even_p:w #1 }
+\cs_generate_variant:Nn \@@_if_even_p:n { o , f }
+\cs_new:Npn \@@_if_even_p:w \s_@@ \@@_chk:w #1 #2 ;
+  {
+    \if_int_odd:w "#1 \exp_stop_f:
+      \exp_after:wN \c_false_bool
+    \else:
+      \exp_after:wN \c_true_bool
+    \fi:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_if_eq_p:nn, \@@_if_eq_p:oo, \@@_if_eq_p:of, \@@_if_eq_p:fo, \@@_if_eq_p:ff,
+%   }
+%   Compare big unsigned integers.
+%    \begin{macrocode}
+\cs_new:Npn \@@_if_eq_p:nn #1 #2
+  { \@@_if_eq_p:ww #1 #2 }
+\cs_generate_variant:Nn \@@_if_eq_p:nn { oo , of , fo , ff }
+\cs_new:Npn \@@_if_eq_p:ww
+      \s_@@ \@@_chk:w #1 #2 ;
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w #1 #3
+      \exp_after:wN \@@_if_eq_p_next:ww
+    \else:
+      \exp_after:wN \@@_if_eq_p_false:ww
+    \fi:
+      \s_@@ \@@_chk:w #1 #2 ;
+      \s_@@ \@@_chk:w #3
+  }
+\cs_new:Npn \@@_if_eq_p_next:ww
+      \s_@@ \@@_chk:w #1 #2 ;
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w * #1
+      \exp_after:wN \@@_if_eq_p_true:ww
+    \else:
+      \exp_after:wN \@@_if_eq_p:ww
+    \fi:
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_if_eq_p_true:ww
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w #2 ;
+  { \c_true_bool }
+\cs_new:Npn \@@_if_eq_p_false:ww
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w #2 ;
+  { \c_false_bool }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_if_lt_p:nn, \@@_if_lt_p:oo, \@@_if_lt_p:of, \@@_if_lt_p:fo, \@@_if_lt_p:ff,
+%   }
+%   Compare big unsigned integers.
+%    \begin{macrocode}
+\cs_new:Npn \@@_if_lt_p:nn #1 #2
+  { \@@_if_lt_p:Nww \c_false_bool #1 #2 }
+\cs_generate_variant:Nn \@@_if_lt_p:nn { oo , of , fo , ff }
+\cs_new:Npn \@@_if_lt_p:Nww #1 \s_@@ \@@_chk:w #2
+  {
+    \if_meaning:w * #2
+      \exp_after:wN \@@_if_lt_p_s:Nww
+    \else:
+      \exp_after:wN \@@_if_lt_p_x:Nww
+    \fi:
+      #1
+      \s_@@ \@@_chk:w #2
+  }
+\cs_new:Npn \@@_if_lt_p_s:Nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3 #4 ;
+  {
+    \if_meaning:w * #3
+      \exp_after:wN #1
+    \else:
+      \exp_after:wN \c_true_bool
+    \fi:
+  }
+\cs_new:Npn \@@_if_lt_p_x:Nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w * #3
+      \exp_after:wN \@@_if_lt_p_xs:Nww
+    \else:
+      \exp_after:wN \@@_if_lt_p_xx:Nww
+    \fi:
+      #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3
+  }
+\cs_new:Npn \@@_if_lt_p_xs:Nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3 ;
+  { \c_false_bool }
+\cs_new:Npn \@@_if_lt_p_xx:Nww #1
+      \s_@@ \@@_chk:w #2 #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w #2 #4
+      \exp_after:wN \@@_if_lt_p_xx_eq:Nww
+    \else:
+      \exp_after:wN \@@_if_lt_p_xx_neq:Nww
+    \fi:
+      #1
+      \s_@@ \@@_chk:w #2 #3 ;
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_if_lt_p_xx_eq:Nww #1
+      \s_@@ \@@_chk:w #2 #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \@@_if_lt_p:Nww #1
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_if_lt_p_xx_neq:Nww #1
+      \s_@@ \@@_chk:w #2 #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \if_int_compare:w "#2 < "#4 \exp_stop_f:
+      \exp_after:wN \@@_if_lt_p:Nww \exp_after:wN \c_true_bool
+    \else:
+      \exp_after:wN \@@_if_lt_p:Nww \exp_after:wN \c_false_bool
+    \fi:
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_if_gt_p:nn, \@@_if_gt_p:oo, \@@_if_gt_p:of, \@@_if_gt_p:fo, \@@_if_gt_p:ff,
+%   }
+%   Compare big unsigned integers.
+%    \begin{macrocode}
+\cs_new:Npn \@@_if_gt_p:nn #1 #2
+  { \@@_if_lt_p:nn #2 #1 }
+\cs_generate_variant:Nn \@@_if_gt_p:nn { oo , of , fo , ff }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsection{Internal arithmetic operations}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_add:nn, \@@_add:oo, \@@_add:of, \@@_add:fo, \@@_add:ff,
+%   }
+%   Add two big unsigned integers.
+%    \begin{macrocode}
+\cs_new:Npn \@@_add:nn #1 #2
+  { \@@_add:nNww {} 0 #1 #2 }
+\cs_generate_variant:Nn \@@_add:nn { oo , of , fo , ff }
+\cs_new:Npn \@@_add:nNww #1 #2
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w * #3
+      \exp_after:wN \@@_add_s:nNww
+    \else:
+      \exp_after:wN \@@_add_x:nNww
+    \fi:
+      {#1} #2
+      \s_@@ \@@_chk:w #3
+  }
+\cs_new:Npn \@@_add_s:nNww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_add_ss:nNww
+    \else:
+      \exp_after:wN \@@_add_sx:nNww
+    \fi:
+      {#1} #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_add_x:nNww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_add_xs:nNww
+    \else:
+      \exp_after:wN \@@_add_xx:nNww
+    \fi:
+      {#1} #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_add_ss:nNww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4 ;
+  {
+    \if_meaning:w 0 #2
+      \exp_after:wN \use_i:nn
+    \else:
+      \exp_after:wN \use:nn
+    \fi:
+      { \s_@@ \@@_chk:w #1 } { 1 } * ;
+  }
+\cs_new:Npn \@@_add_sx:nNww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w
+  {
+    \@@_add_xx:nNww {#1} #2
+      \s_@@ \@@_chk:w 0 #3 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_add_xs:nNww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w
+  {
+    \@@_add_xx:nNww {#1} #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w 0
+  }
+\cs_new:Npn \@@_add_xx:nNww #1 #2
+      \s_@@ \@@_chk:w #3 #4 ;
+      \s_@@ \@@_chk:w #5
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_add_xx:NNnww
+      \cs:w c_@@_add_ #2 #3 #5 _tl \cs_end:
+      {#1}
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_add_xx:NNnww #1 #2 #3
+  { \@@_add:nNww { #3 #2 } #1 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3 #4 #5
+  { \tl_const:cn { c_@@_add_ #1 #2 #3 _tl } { #4 #5 } }
+\clist_map_inline:nn
+  {
+    00000, 00101, 00202, 00303, 00404, 00505, 00606, 00707,
+    00808, 00909, 00A0A, 00B0B, 00C0C, 00D0D, 00E0E, 00F0F,
+    01001, 01102, 01203, 01304, 01405, 01506, 01607, 01708,
+    01809, 0190A, 01A0B, 01B0C, 01C0D, 01D0E, 01E0F, 01F10,
+    02002, 02103, 02204, 02305, 02406, 02507, 02608, 02709,
+    0280A, 0290B, 02A0C, 02B0D, 02C0E, 02D0F, 02E10, 02F11,
+    03003, 03104, 03205, 03306, 03407, 03508, 03609, 0370A,
+    0380B, 0390C, 03A0D, 03B0E, 03C0F, 03D10, 03E11, 03F12,
+    04004, 04105, 04206, 04307, 04408, 04509, 0460A, 0470B,
+    0480C, 0490D, 04A0E, 04B0F, 04C10, 04D11, 04E12, 04F13,
+    05005, 05106, 05207, 05308, 05409, 0550A, 0560B, 0570C,
+    0580D, 0590E, 05A0F, 05B10, 05C11, 05D12, 05E13, 05F14,
+    06006, 06107, 06208, 06309, 0640A, 0650B, 0660C, 0670D,
+    0680E, 0690F, 06A10, 06B11, 06C12, 06D13, 06E14, 06F15,
+    07007, 07108, 07209, 0730A, 0740B, 0750C, 0760D, 0770E,
+    0780F, 07910, 07A11, 07B12, 07C13, 07D14, 07E15, 07F16,
+    08008, 08109, 0820A, 0830B, 0840C, 0850D, 0860E, 0870F,
+    08810, 08911, 08A12, 08B13, 08C14, 08D15, 08E16, 08F17,
+    09009, 0910A, 0920B, 0930C, 0940D, 0950E, 0960F, 09710,
+    09811, 09912, 09A13, 09B14, 09C15, 09D16, 09E17, 09F18,
+    0A00A, 0A10B, 0A20C, 0A30D, 0A40E, 0A50F, 0A610, 0A711,
+    0A812, 0A913, 0AA14, 0AB15, 0AC16, 0AD17, 0AE18, 0AF19,
+    0B00B, 0B10C, 0B20D, 0B30E, 0B40F, 0B510, 0B611, 0B712,
+    0B813, 0B914, 0BA15, 0BB16, 0BC17, 0BD18, 0BE19, 0BF1A,
+    0C00C, 0C10D, 0C20E, 0C30F, 0C410, 0C511, 0C612, 0C713,
+    0C814, 0C915, 0CA16, 0CB17, 0CC18, 0CD19, 0CE1A, 0CF1B,
+    0D00D, 0D10E, 0D20F, 0D310, 0D411, 0D512, 0D613, 0D714,
+    0D815, 0D916, 0DA17, 0DB18, 0DC19, 0DD1A, 0DE1B, 0DF1C,
+    0E00E, 0E10F, 0E210, 0E311, 0E412, 0E513, 0E614, 0E715,
+    0E816, 0E917, 0EA18, 0EB19, 0EC1A, 0ED1B, 0EE1C, 0EF1D,
+    0F00F, 0F110, 0F211, 0F312, 0F413, 0F514, 0F615, 0F716,
+    0F817, 0F918, 0FA19, 0FB1A, 0FC1B, 0FD1C, 0FE1D, 0FF1E,
+    10001, 10102, 10203, 10304, 10405, 10506, 10607, 10708,
+    10809, 1090A, 10A0B, 10B0C, 10C0D, 10D0E, 10E0F, 10F10,
+    11002, 11103, 11204, 11305, 11406, 11507, 11608, 11709,
+    1180A, 1190B, 11A0C, 11B0D, 11C0E, 11D0F, 11E10, 11F11,
+    12003, 12104, 12205, 12306, 12407, 12508, 12609, 1270A,
+    1280B, 1290C, 12A0D, 12B0E, 12C0F, 12D10, 12E11, 12F12,
+    13004, 13105, 13206, 13307, 13408, 13509, 1360A, 1370B,
+    1380C, 1390D, 13A0E, 13B0F, 13C10, 13D11, 13E12, 13F13,
+    14005, 14106, 14207, 14308, 14409, 1450A, 1460B, 1470C,
+    1480D, 1490E, 14A0F, 14B10, 14C11, 14D12, 14E13, 14F14,
+    15006, 15107, 15208, 15309, 1540A, 1550B, 1560C, 1570D,
+    1580E, 1590F, 15A10, 15B11, 15C12, 15D13, 15E14, 15F15,
+    16007, 16108, 16209, 1630A, 1640B, 1650C, 1660D, 1670E,
+    1680F, 16910, 16A11, 16B12, 16C13, 16D14, 16E15, 16F16,
+    17008, 17109, 1720A, 1730B, 1740C, 1750D, 1760E, 1770F,
+    17810, 17911, 17A12, 17B13, 17C14, 17D15, 17E16, 17F17,
+    18009, 1810A, 1820B, 1830C, 1840D, 1850E, 1860F, 18710,
+    18811, 18912, 18A13, 18B14, 18C15, 18D16, 18E17, 18F18,
+    1900A, 1910B, 1920C, 1930D, 1940E, 1950F, 19610, 19711,
+    19812, 19913, 19A14, 19B15, 19C16, 19D17, 19E18, 19F19,
+    1A00B, 1A10C, 1A20D, 1A30E, 1A40F, 1A510, 1A611, 1A712,
+    1A813, 1A914, 1AA15, 1AB16, 1AC17, 1AD18, 1AE19, 1AF1A,
+    1B00C, 1B10D, 1B20E, 1B30F, 1B410, 1B511, 1B612, 1B713,
+    1B814, 1B915, 1BA16, 1BB17, 1BC18, 1BD19, 1BE1A, 1BF1B,
+    1C00D, 1C10E, 1C20F, 1C310, 1C411, 1C512, 1C613, 1C714,
+    1C815, 1C916, 1CA17, 1CB18, 1CC19, 1CD1A, 1CE1B, 1CF1C,
+    1D00E, 1D10F, 1D210, 1D311, 1D412, 1D513, 1D614, 1D715,
+    1D816, 1D917, 1DA18, 1DB19, 1DC1A, 1DD1B, 1DE1C, 1DF1D,
+    1E00F, 1E110, 1E211, 1E312, 1E413, 1E514, 1E615, 1E716,
+    1E817, 1E918, 1EA19, 1EB1A, 1EC1B, 1ED1C, 1EE1D, 1EF1E,
+    1F010, 1F111, 1F212, 1F313, 1F414, 1F515, 1F616, 1F717,
+    1F818, 1F919, 1FA1A, 1FB1B, 1FC1C, 1FD1D, 1FE1E, 1FF1F
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_sub:nn, \@@_sub:oo, \@@_sub:of, \@@_sub:fo, \@@_sub:ff,
+%   }
+%   Subtract two big unsigned integers.
+%    \begin{macrocode}
+\cs_new:Npn \@@_sub:nn #1 #2
+  { \@@_sub:nnNww {} {} 0 #1 #2 }
+\cs_generate_variant:Nn \@@_sub:nn { oo , of , fo , ff }
+\cs_generate_variant:Nn \@@_sub:nn { no }
+\cs_new:Npn \@@_sub:nnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_sub_s:nnNww
+    \else:
+      \exp_after:wN \@@_sub_x:nnNww
+    \fi:
+      {#1} {#2} #3
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_sub_s:nnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  {
+    \if_meaning:w * #5
+      \exp_after:wN \@@_sub_ss:nnNww
+    \else:
+      \exp_after:wN \@@_sub_sx:nnNww
+    \fi:
+      {#1} {#2} #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  }
+\cs_new:Npn \@@_sub_x:nnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  {
+    \if_meaning:w * #5
+      \exp_after:wN \@@_sub_xs:nnNww
+    \else:
+      \exp_after:wN \@@_sub_xx:nnNww
+    \fi:
+      {#1} {#2} #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  }
+\cs_new:Npn \@@_sub_ss:nnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5 ;
+  {
+    \if_meaning:w 0 #3
+      \exp_after:wN \@@_sub_ss_ok:n
+    \else:
+      \exp_after:wN \@@_sub_ss_error:n
+    \fi:
+      {#1}
+  }
+\cs_new:Npn \@@_sub_ss_ok:n #1
+  {
+    \if_meaning:w \q_@@ #1 \q_@@
+      \exp_after:wN \use:nn
+    \else:
+      \exp_after:wN \use_i:nn
+    \fi:
+    { \s_@@ \@@_chk:w #1 } { 0 } * ;
+  }
+\cs_new:Npn \@@_sub_ss_error:n #1
+  {
+    \msg_expandable_error:nn { biguint } { underflow }
+    \c_zero_biguint
+  }
+\cs_new:Npn \@@_sub_sx:nnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5 ;
+  {
+    \msg_expandable_error:nn { biguint } { underflow }
+    \c_zero_biguint
+  }
+\cs_new:Npn \@@_sub_xs:nnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w
+  {
+    \@@_sub_xx:nnNww {#1} {#2} #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w 0
+  }
+\cs_new:Npn \@@_sub_xx:nnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 #5 ;
+      \s_@@ \@@_chk:w #6
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_sub_xx:NNnnww
+      \cs:w c_@@_sub_ #3 #4 #6 _tl \cs_end:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #5 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_sub_xx:NNnnww #1 #2
+  {
+    \if_meaning:w 0 #2
+      \exp_after:wN \@@_sub_xx_zero:NNnnww
+    \else:
+      \exp_after:wN \@@_sub_xx_nonzero:NNnnww
+    \fi:
+      #1 #2
+  }
+\cs_new:Npn \@@_sub_xx_zero:NNnnww #1 #2 #3 #4
+  { \@@_sub:nnNww { #3 } { #4 #2 } #1 }
+\cs_new:Npn \@@_sub_xx_nonzero:NNnnww #1 #2 #3 #4
+  { \@@_sub:nnNww { #3 #4 #2 } {} #1 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3 #4 #5
+  { \tl_const:cn { c_@@_sub_ #1 #2 #3 _tl } { #4 #5 } }
+\clist_map_inline:nn
+  {
+    00000, 0011F, 0021E, 0031D, 0041C, 0051B, 0061A, 00719,
+    00818, 00917, 00A16, 00B15, 00C14, 00D13, 00E12, 00F11,
+    01001, 01100, 0121F, 0131E, 0141D, 0151C, 0161B, 0171A,
+    01819, 01918, 01A17, 01B16, 01C15, 01D14, 01E13, 01F12,
+    02002, 02101, 02200, 0231F, 0241E, 0251D, 0261C, 0271B,
+    0281A, 02919, 02A18, 02B17, 02C16, 02D15, 02E14, 02F13,
+    03003, 03102, 03201, 03300, 0341F, 0351E, 0361D, 0371C,
+    0381B, 0391A, 03A19, 03B18, 03C17, 03D16, 03E15, 03F14,
+    04004, 04103, 04202, 04301, 04400, 0451F, 0461E, 0471D,
+    0481C, 0491B, 04A1A, 04B19, 04C18, 04D17, 04E16, 04F15,
+    05005, 05104, 05203, 05302, 05401, 05500, 0561F, 0571E,
+    0581D, 0591C, 05A1B, 05B1A, 05C19, 05D18, 05E17, 05F16,
+    06006, 06105, 06204, 06303, 06402, 06501, 06600, 0671F,
+    0681E, 0691D, 06A1C, 06B1B, 06C1A, 06D19, 06E18, 06F17,
+    07007, 07106, 07205, 07304, 07403, 07502, 07601, 07700,
+    0781F, 0791E, 07A1D, 07B1C, 07C1B, 07D1A, 07E19, 07F18,
+    08008, 08107, 08206, 08305, 08404, 08503, 08602, 08701,
+    08800, 0891F, 08A1E, 08B1D, 08C1C, 08D1B, 08E1A, 08F19,
+    09009, 09108, 09207, 09306, 09405, 09504, 09603, 09702,
+    09801, 09900, 09A1F, 09B1E, 09C1D, 09D1C, 09E1B, 09F1A,
+    0A00A, 0A109, 0A208, 0A307, 0A406, 0A505, 0A604, 0A703,
+    0A802, 0A901, 0AA00, 0AB1F, 0AC1E, 0AD1D, 0AE1C, 0AF1B,
+    0B00B, 0B10A, 0B209, 0B308, 0B407, 0B506, 0B605, 0B704,
+    0B803, 0B902, 0BA01, 0BB00, 0BC1F, 0BD1E, 0BE1D, 0BF1C,
+    0C00C, 0C10B, 0C20A, 0C309, 0C408, 0C507, 0C606, 0C705,
+    0C804, 0C903, 0CA02, 0CB01, 0CC00, 0CD1F, 0CE1E, 0CF1D,
+    0D00D, 0D10C, 0D20B, 0D30A, 0D409, 0D508, 0D607, 0D706,
+    0D805, 0D904, 0DA03, 0DB02, 0DC01, 0DD00, 0DE1F, 0DF1E,
+    0E00E, 0E10D, 0E20C, 0E30B, 0E40A, 0E509, 0E608, 0E707,
+    0E806, 0E905, 0EA04, 0EB03, 0EC02, 0ED01, 0EE00, 0EF1F,
+    0F00F, 0F10E, 0F20D, 0F30C, 0F40B, 0F50A, 0F609, 0F708,
+    0F807, 0F906, 0FA05, 0FB04, 0FC03, 0FD02, 0FE01, 0FF00,
+    1001F, 1011E, 1021D, 1031C, 1041B, 1051A, 10619, 10718,
+    10817, 10916, 10A15, 10B14, 10C13, 10D12, 10E11, 10F10,
+    11000, 1111F, 1121E, 1131D, 1141C, 1151B, 1161A, 11719,
+    11818, 11917, 11A16, 11B15, 11C14, 11D13, 11E12, 11F11,
+    12001, 12100, 1221F, 1231E, 1241D, 1251C, 1261B, 1271A,
+    12819, 12918, 12A17, 12B16, 12C15, 12D14, 12E13, 12F12,
+    13002, 13101, 13200, 1331F, 1341E, 1351D, 1361C, 1371B,
+    1381A, 13919, 13A18, 13B17, 13C16, 13D15, 13E14, 13F13,
+    14003, 14102, 14201, 14300, 1441F, 1451E, 1461D, 1471C,
+    1481B, 1491A, 14A19, 14B18, 14C17, 14D16, 14E15, 14F14,
+    15004, 15103, 15202, 15301, 15400, 1551F, 1561E, 1571D,
+    1581C, 1591B, 15A1A, 15B19, 15C18, 15D17, 15E16, 15F15,
+    16005, 16104, 16203, 16302, 16401, 16500, 1661F, 1671E,
+    1681D, 1691C, 16A1B, 16B1A, 16C19, 16D18, 16E17, 16F16,
+    17006, 17105, 17204, 17303, 17402, 17501, 17600, 1771F,
+    1781E, 1791D, 17A1C, 17B1B, 17C1A, 17D19, 17E18, 17F17,
+    18007, 18106, 18205, 18304, 18403, 18502, 18601, 18700,
+    1881F, 1891E, 18A1D, 18B1C, 18C1B, 18D1A, 18E19, 18F18,
+    19008, 19107, 19206, 19305, 19404, 19503, 19602, 19701,
+    19800, 1991F, 19A1E, 19B1D, 19C1C, 19D1B, 19E1A, 19F19,
+    1A009, 1A108, 1A207, 1A306, 1A405, 1A504, 1A603, 1A702,
+    1A801, 1A900, 1AA1F, 1AB1E, 1AC1D, 1AD1C, 1AE1B, 1AF1A,
+    1B00A, 1B109, 1B208, 1B307, 1B406, 1B505, 1B604, 1B703,
+    1B802, 1B901, 1BA00, 1BB1F, 1BC1E, 1BD1D, 1BE1C, 1BF1B,
+    1C00B, 1C10A, 1C209, 1C308, 1C407, 1C506, 1C605, 1C704,
+    1C803, 1C902, 1CA01, 1CB00, 1CC1F, 1CD1E, 1CE1D, 1CF1C,
+    1D00C, 1D10B, 1D20A, 1D309, 1D408, 1D507, 1D606, 1D705,
+    1D804, 1D903, 1DA02, 1DB01, 1DC00, 1DD1F, 1DE1E, 1DF1D,
+    1E00D, 1E10C, 1E20B, 1E30A, 1E409, 1E508, 1E607, 1E706,
+    1E805, 1E904, 1EA03, 1EB02, 1EC01, 1ED00, 1EE1F, 1EF1E,
+    1F00E, 1F10D, 1F20C, 1F30B, 1F40A, 1F509, 1F608, 1F707,
+    1F806, 1F905, 1FA04, 1FB03, 1FC02, 1FD01, 1FE00, 1FF1F
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_mul:nn, \@@_mul:oo, \@@_mul:of, \@@_mul:fo, \@@_mul:ff
+%   }
+%   Mul.
+%    \begin{macrocode}
+\cs_new:Npn \@@_mul:nn #1 #2
+  {
+    \if_predicate:w \@@_if_zero_p:n {#2}
+      \exp_after:wN \@@_mul_zero:nw
+    \else:
+      \exp_after:wN \@@_mul_aux:nw
+    \fi:
+      {#1} #2
+  }
+\cs_generate_variant:Nn \@@_mul:nn { oo , of , fo , ff }
+\cs_new:Npn \@@_mul_zero:nw #1
+      \s_@@ \@@_chk:w #2 ;
+  { \s_@@ \@@_chk:w 0 * ; }
+\cs_new:Npn \@@_mul_aux:nw #1
+  {
+    \if_predicate:w \@@_if_zero_p:n {#1}
+      \exp_after:wN \@@_mul_zero:nw
+    \else:
+      \exp_after:wN \@@_mul:nw
+    \fi:
+      {#1}
+  }
+\cs_new:Npn \@@_mul:nw
+  { \@@_mul:nnnw {} {} }
+\cs_new:Npn \@@_mul:nnnw #1 #2 #3
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_mul_s:nnnNw
+    \else:
+      \exp_after:wN \@@_mul_x:nnnNw
+    \fi:
+      {#1} {#2} {#3} #4
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_mul_s:nnnNw #1 #2 #3 #4
+      \s_@@ \@@_chk:w #5 ;
+  { \s_@@ \@@_chk:w #1 #2 * ; }
+\cs_new:Npn \@@_mul_x:nnnNw #1 #2 #3 #4
+  {
+    \if_meaning:w 0 #4
+      \exp_after:wN \@@_mul_z:nnnNw
+    \else:
+      \exp_after:wN \@@_mul_y:nnnNw
+    \fi:
+      {#1} {#2} {#3} #4
+  }
+\cs_new:Npn \@@_mul_z:nnnNw #1 #2 #3 #4
+  {
+    \if_meaning:w \q_@@ #2 \q_@@
+      \exp_after:wN \use:nn
+    \else:
+      \exp_after:wN \use_i:nn
+    \fi:
+    { \@@_mul_z_next:wnnw #2 } { 0 } ;
+        {#1} {#3}
+  }
+\cs_new:Npn \@@_mul_z_next:wnnw #1 #2 ; #3
+  { \@@_mul:nnnw { #3 #1 } {#2} }
+\cs_new:Npn \@@_mul_y:nnnNw #1 #2 #3 #4
+  {
+    \exp_after:wN \@@_mul_y:nnnw \exp_after:wN 
+      {
+        \exp:w \exp_end_continue_f:w
+        \@@_mul_part:nNNww {} 0 #4
+          #3
+          \s_@@ \@@_chk:w #2 * ;
+      }
+      {#1} {#3}
+  }
+\cs_new:Npn \@@_mul_y:nnnw #1 #2 #3
+  { \@@_mul_y_next:wnnw #1 ; {#2} {#3} }
+\cs_new:Npn \@@_mul_y_next:wnnw #1 #2 ; #3
+  { \@@_mul:nnnw { #3 #1 } {#2} }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_mul_part:nNNww #1 #2 #3
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_mul_part_s:nNNww
+    \else:
+      \exp_after:wN \@@_mul_part_x:nNNww
+    \fi:
+      {#1} #2 #3
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_mul_part_s:nNNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  {
+    \if_meaning:w * #5
+      \exp_after:wN \@@_mul_part_ss:nNNww
+    \else:
+      \exp_after:wN \@@_mul_part_sx:nNNww
+    \fi:
+      {#1} #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  }
+\cs_new:Npn \@@_mul_part_x:nNNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  {
+    \if_meaning:w * #5
+      \exp_after:wN \@@_mul_part_xs:nNNww
+    \else:
+      \exp_after:wN \@@_mul_part_xx:nNNww
+    \fi:
+      {#1} #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5
+  }
+\cs_new:Npn \@@_mul_part_ss:nNNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w #5 ;
+  {
+    \if_meaning:w 0 #2
+      \exp_after:wN \use_i:nn
+    \else:
+      \exp_after:wN \use:nn
+    \fi:
+      {#1} {#2}
+  }
+\cs_new:Npn \@@_mul_part_sx:nNNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w
+  {
+    \@@_mul_part_xx:nNNww {#1} #2 #3
+      \s_@@ \@@_chk:w 0 #4 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_mul_part_xs:nNNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w
+  {
+    \@@_mul_part_xx:nNNww {#1} #2 #3
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w 0
+  }
+\cs_new:Npn \@@_mul_part_xx:nNNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 #5 ;
+      \s_@@ \@@_chk:w #6
+  {
+    \exp_after:wN
+    \@@_mul_part_xx:NNnNww
+      \exp:w \exp_end_continue_f:w
+      \@@_mul_digit:NNNN #3 #4 #6 #2
+      {#1} #3
+      \s_@@ \@@_chk:w #5 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_mul_part_xx:NNnNww #1 #2 #3
+  { \@@_mul_part:nNNww { #3 #2 } #1 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_mul_digit:NNNN #1 #2 #3 #4
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_mul_digit_i:NNNN
+      \cs:w c_@@_add_ 0 #3 #4 _tl \cs_end:
+      #1 #2
+  }
+\cs_new:Npn \@@_mul_digit_i:NNNN #1 #2 #3 #4
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_mul_digit_ii:NNNN
+      \cs:w c_@@_mul_ #3 #4 _tl \cs_end:
+      #1 #2
+  }
+\cs_new:Npn \@@_mul_digit_ii:NNNN #1 #2 #3 #4
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_mul_digit_iii:NNNN
+      \cs:w c_@@_add_ 0 #2 #4 _tl \cs_end:
+      #1 #3
+  }
+\cs_new:Npn \@@_mul_digit_iii:NNNN #1 #2 #3 #4
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_mul_digit_iv:NNN
+      \cs:w c_@@_add_ #4 #1 #3 _tl \cs_end:
+      #2
+  }
+\cs_new:Npn \@@_mul_digit_iv:NNN #1 #2 #3
+  {
+    \if_meaning:w 0 #1 \else:
+      \@@_UNREACHABLE:
+    \fi:
+    #2 #3
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3 #4
+  {
+    \tl_const:cn { c_@@_mul_ #1 #2 _tl } { #3 #4 }
+  }
+\clist_map_inline:nn
+  {
+    0000, 0100, 0200, 0300, 0400, 0500, 0600, 0700,
+    0800, 0900, 0A00, 0B00, 0C00, 0D00, 0E00, 0F00,
+    1000, 1101, 1202, 1303, 1404, 1505, 1606, 1707,
+    1808, 1909, 1A0A, 1B0B, 1C0C, 1D0D, 1E0E, 1F0F,
+    2000, 2102, 2204, 2306, 2408, 250A, 260C, 270E,
+    2810, 2912, 2A14, 2B16, 2C18, 2D1A, 2E1C, 2F1E,
+    3000, 3103, 3206, 3309, 340C, 350F, 3612, 3715,
+    3818, 391B, 3A1E, 3B21, 3C24, 3D27, 3E2A, 3F2D,
+    4000, 4104, 4208, 430C, 4410, 4514, 4618, 471C,
+    4820, 4924, 4A28, 4B2C, 4C30, 4D34, 4E38, 4F3C,
+    5000, 5105, 520A, 530F, 5414, 5519, 561E, 5723,
+    5828, 592D, 5A32, 5B37, 5C3C, 5D41, 5E46, 5F4B,
+    6000, 6106, 620C, 6312, 6418, 651E, 6624, 672A,
+    6830, 6936, 6A3C, 6B42, 6C48, 6D4E, 6E54, 6F5A,
+    7000, 7107, 720E, 7315, 741C, 7523, 762A, 7731,
+    7838, 793F, 7A46, 7B4D, 7C54, 7D5B, 7E62, 7F69,
+    8000, 8108, 8210, 8318, 8420, 8528, 8630, 8738,
+    8840, 8948, 8A50, 8B58, 8C60, 8D68, 8E70, 8F78,
+    9000, 9109, 9212, 931B, 9424, 952D, 9636, 973F,
+    9848, 9951, 9A5A, 9B63, 9C6C, 9D75, 9E7E, 9F87,
+    A000, A10A, A214, A31E, A428, A532, A63C, A746,
+    A850, A95A, AA64, AB6E, AC78, AD82, AE8C, AF96,
+    B000, B10B, B216, B321, B42C, B537, B642, B74D,
+    B858, B963, BA6E, BB79, BC84, BD8F, BE9A, BFA5,
+    C000, C10C, C218, C324, C430, C53C, C648, C754,
+    C860, C96C, CA78, CB84, CC90, CD9C, CEA8, CFB4,
+    D000, D10D, D21A, D327, D434, D541, D64E, D75B,
+    D868, D975, DA82, DB8F, DC9C, DDA9, DEB6, DFC3,
+    E000, E10E, E21C, E32A, E438, E546, E654, E762,
+    E870, E97E, EA8C, EB9A, ECA8, EDB6, EEC4, EFD2,
+    F000, F10F, F21E, F32D, F43C, F54B, F65A, F769,
+    F878, F987, FA96, FBA5, FCB4, FDC3, FED2, FFE1
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Internal bitwise operations}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_and:nn, \@@_and:oo, \@@_and:of, \@@_and:fo, \@@_and:ff
+%   }
+%   Bitwise AND operation.
+%    \begin{macrocode}
+\cs_new:Npn \@@_and:nn #1 #2
+  { \@@_and:nnww {} {} #1 #2 }
+\cs_generate_variant:Nn \@@_and:nn { oo , of , fo , ff }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_and:nnww #1 #2
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w * #3
+      \exp_after:wN \@@_and_s:nnww
+    \else:
+      \exp_after:wN \@@_and_x:nnww
+    \fi:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #3
+  }
+\cs_new:Npn \@@_and_x:nnww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_and_s:nnww
+    \else:
+      \exp_after:wN \@@_and_xx:nnww
+    \fi:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_and_s:nnww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4 ;
+  {
+    \if_meaning:w \q_@@ #1 \q_@@
+      \exp_after:wN \use:nn
+    \else:
+      \exp_after:wN \use_i:nn
+    \fi:
+      { \s_@@ \@@_chk:w #1 } { 0 } * ;
+  }
+\cs_new:Npn \@@_and_xx:nnww #1 #2
+      \s_@@ \@@_chk:w #3 #4 ;
+      \s_@@ \@@_chk:w #5
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_and_xx:Nnnww
+      \cs:w c_@@_and_ #3 #5 _tl \cs_end:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_and_xx:Nnnww #1 #2 #3
+  {
+    \if_meaning:w 0 #1
+      \exp_after:wN \@@_and_xx_z:Nnnww
+    \else:
+      \exp_after:wN \@@_and_xx_x:Nnnww
+    \fi:
+      #1 {#2} {#3}
+  }
+\cs_new:Npn \@@_and_xx_z:Nnnww #1 #2 #3
+  { \@@_and:nnww {#2} { #3 #1 } }
+\cs_new:Npn \@@_and_xx_x:Nnnww #1 #2 #3
+  { \@@_and:nnww { #2 #3 #1 } {} }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3
+  {
+    \tl_const:cn { c_@@_and_ #1 #2 _tl } { #3 }
+  }
+\clist_map_inline:nn
+  {
+    000, 010, 020, 030, 040, 050, 060, 070,
+    080, 090, 0A0, 0B0, 0C0, 0D0, 0E0, 0F0,
+    100, 111, 120, 131, 140, 151, 160, 171,
+    180, 191, 1A0, 1B1, 1C0, 1D1, 1E0, 1F1,
+    200, 210, 222, 232, 240, 250, 262, 272,
+    280, 290, 2A2, 2B2, 2C0, 2D0, 2E2, 2F2,
+    300, 311, 322, 333, 340, 351, 362, 373,
+    380, 391, 3A2, 3B3, 3C0, 3D1, 3E2, 3F3,
+    400, 410, 420, 430, 444, 454, 464, 474,
+    480, 490, 4A0, 4B0, 4C4, 4D4, 4E4, 4F4,
+    500, 511, 520, 531, 544, 555, 564, 575,
+    580, 591, 5A0, 5B1, 5C4, 5D5, 5E4, 5F5,
+    600, 610, 622, 632, 644, 654, 666, 676,
+    680, 690, 6A2, 6B2, 6C4, 6D4, 6E6, 6F6,
+    700, 711, 722, 733, 744, 755, 766, 777,
+    780, 791, 7A2, 7B3, 7C4, 7D5, 7E6, 7F7,
+    800, 810, 820, 830, 840, 850, 860, 870,
+    888, 898, 8A8, 8B8, 8C8, 8D8, 8E8, 8F8,
+    900, 911, 920, 931, 940, 951, 960, 971,
+    988, 999, 9A8, 9B9, 9C8, 9D9, 9E8, 9F9,
+    A00, A10, A22, A32, A40, A50, A62, A72,
+    A88, A98, AAA, ABA, AC8, AD8, AEA, AFA,
+    B00, B11, B22, B33, B40, B51, B62, B73,
+    B88, B99, BAA, BBB, BC8, BD9, BEA, BFB,
+    C00, C10, C20, C30, C44, C54, C64, C74,
+    C88, C98, CA8, CB8, CCC, CDC, CEC, CFC,
+    D00, D11, D20, D31, D44, D55, D64, D75,
+    D88, D99, DA8, DB9, DCC, DDD, DEC, DFD,
+    E00, E10, E22, E32, E44, E54, E66, E76,
+    E88, E98, EAA, EBA, ECC, EDC, EEE, EFE,
+    F00, F11, F22, F33, F44, F55, F66, F77,
+    F88, F99, FAA, FBB, FCC, FDD, FEE, FFF
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_or:nn, \@@_or:oo, \@@_or:of, \@@_or:fo, \@@_or:ff
+%   }
+%   Bitwise OR operation.
+%    \begin{macrocode}
+\cs_new:Npn \@@_or:nn #1 #2
+  { \@@_or:nww {} #1 #2 }
+\cs_generate_variant:Nn \@@_or:nn { oo , of , fo , ff }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_or:nww #1
+      \s_@@ \@@_chk:w #2
+  {
+    \if_meaning:w * #2
+      \exp_after:wN \@@_or_s:nww
+    \else:
+      \exp_after:wN \@@_or_x:nww
+    \fi:
+      {#1}
+      \s_@@ \@@_chk:w #2
+  }
+\cs_new:Npn \@@_or_s:nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w * #3
+      \exp_after:wN \@@_or_ss:nww
+    \else:
+      \exp_after:wN \@@_or_sx:nww
+    \fi:
+      {#1}
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3
+  }
+\cs_new:Npn \@@_or_x:nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w * #3
+      \exp_after:wN \@@_or_xs:nww
+    \else:
+      \exp_after:wN \@@_or_xx:nww
+    \fi:
+      {#1}
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3
+  }
+\cs_new:Npn \@@_or_ss:nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3 ;
+  { \s_@@ \@@_chk:w #1 * ; }
+\cs_new:Npn \@@_or_sx:nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3 ;
+  { \s_@@ \@@_chk:w #1 #3 ; }
+\cs_new:Npn \@@_or_xs:nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3 ;
+  { \s_@@ \@@_chk:w #1 #2 ; }
+\cs_new:Npn \@@_or_xx:nww #1
+      \s_@@ \@@_chk:w #2 #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_or_xx:Nnww
+      \cs:w c_@@_or_ #2 #4 _tl \cs_end:
+      {#1}
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_or_xx:Nnww #1 #2
+  { \@@_or:nww { #2 #1 } }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3
+  { \tl_const:cn { c_@@_or_ #1 #2 _tl } { #3 } }
+\clist_map_inline:nn
+  {
+    000, 011, 022, 033, 044, 055, 066, 077,
+    088, 099, 0AA, 0BB, 0CC, 0DD, 0EE, 0FF,
+    101, 111, 123, 133, 145, 155, 167, 177,
+    189, 199, 1AB, 1BB, 1CD, 1DD, 1EF, 1FF,
+    202, 213, 222, 233, 246, 257, 266, 277,
+    28A, 29B, 2AA, 2BB, 2CE, 2DF, 2EE, 2FF,
+    303, 313, 323, 333, 347, 357, 367, 377,
+    38B, 39B, 3AB, 3BB, 3CF, 3DF, 3EF, 3FF,
+    404, 415, 426, 437, 444, 455, 466, 477,
+    48C, 49D, 4AE, 4BF, 4CC, 4DD, 4EE, 4FF,
+    505, 515, 527, 537, 545, 555, 567, 577,
+    58D, 59D, 5AF, 5BF, 5CD, 5DD, 5EF, 5FF,
+    606, 617, 626, 637, 646, 657, 666, 677,
+    68E, 69F, 6AE, 6BF, 6CE, 6DF, 6EE, 6FF,
+    707, 717, 727, 737, 747, 757, 767, 777,
+    78F, 79F, 7AF, 7BF, 7CF, 7DF, 7EF, 7FF,
+    808, 819, 82A, 83B, 84C, 85D, 86E, 87F,
+    888, 899, 8AA, 8BB, 8CC, 8DD, 8EE, 8FF,
+    909, 919, 92B, 93B, 94D, 95D, 96F, 97F,
+    989, 999, 9AB, 9BB, 9CD, 9DD, 9EF, 9FF,
+    A0A, A1B, A2A, A3B, A4E, A5F, A6E, A7F,
+    A8A, A9B, AAA, ABB, ACE, ADF, AEE, AFF,
+    B0B, B1B, B2B, B3B, B4F, B5F, B6F, B7F,
+    B8B, B9B, BAB, BBB, BCF, BDF, BEF, BFF,
+    C0C, C1D, C2E, C3F, C4C, C5D, C6E, C7F,
+    C8C, C9D, CAE, CBF, CCC, CDD, CEE, CFF,
+    D0D, D1D, D2F, D3F, D4D, D5D, D6F, D7F,
+    D8D, D9D, DAF, DBF, DCD, DDD, DEF, DFF,
+    E0E, E1F, E2E, E3F, E4E, E5F, E6E, E7F,
+    E8E, E9F, EAE, EBF, ECE, EDF, EEE, EFF,
+    F0F, F1F, F2F, F3F, F4F, F5F, F6F, F7F,
+    F8F, F9F, FAF, FBF, FCF, FDF, FEF, FFF
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_xor:nn, \@@_xor:oo, \@@_xor:of, \@@_xor:fo, \@@_xor:ff
+%   }
+%   Bitwise XOR operation.
+%    \begin{macrocode}
+\cs_new:Npn \@@_xor:nn #1 #2
+  { \@@_xor:nnww {} {} #1 #2 }
+\cs_generate_variant:Nn \@@_xor:nn { oo , of , fo , ff }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_xor:nnww #1 #2
+      \s_@@ \@@_chk:w #3
+  {
+    \if_meaning:w * #3
+      \exp_after:wN \@@_xor_s:nnww
+    \else:
+      \exp_after:wN \@@_xor_x:nnww
+    \fi:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #3
+  }
+\cs_new:Npn \@@_xor_s:nnww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_xor_ss:nnww
+    \else:
+      \exp_after:wN \@@_xor_sx:nnww
+    \fi:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_xor_x:nnww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_xor_xs:nnww
+    \else:
+      \exp_after:wN \@@_xor_xx:nnww
+    \fi:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_xor_ss:nnww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4 ;
+  {
+    \if_meaning:w \q_@@ #1 \q_@@
+      \exp_after:wN \use:nn
+    \else:
+      \exp_after:wN \use_i:nn
+    \fi:
+      { \s_@@ \@@_chk:w #1 } { 0 } * ;
+  }
+\cs_new:Npn \@@_xor_sx:nnww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4 ;
+  { \s_@@ \@@_chk:w #1 #2 #4 ; }
+\cs_new:Npn \@@_xor_xs:nnww #1 #2
+      \s_@@ \@@_chk:w #3 ;
+      \s_@@ \@@_chk:w #4 ;
+  { \s_@@ \@@_chk:w #1 #2 #3 ; }
+\cs_new:Npn \@@_xor_xx:nnww #1 #2
+      \s_@@ \@@_chk:w #3 #4 ;
+      \s_@@ \@@_chk:w #5
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_xor_xx:Nnnww
+      \cs:w c_@@_xor_ #3 #5 _tl \cs_end:
+      {#1} {#2}
+      \s_@@ \@@_chk:w #4 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_xor_xx:Nnnww #1
+  {
+    \if_meaning:w 0 #1
+      \exp_after:wN \@@_xor_xx_z:Nnnww
+    \else:
+      \exp_after:wN \@@_xor_xx_x:Nnnww
+    \fi:
+    #1
+  }
+\cs_new:Npn \@@_xor_xx_z:Nnnww #1 #2 #3
+  { \@@_xor:nnww {#2} { #3 #1 } }
+\cs_new:Npn \@@_xor_xx_x:Nnnww #1 #2 #3
+  { \@@_xor:nnww { #2 #3 #1 } {} }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3
+  { \tl_const:cn { c_@@_xor_ #1 #2 _tl } { #3 } }
+\clist_map_inline:nn
+  {
+    000, 011, 022, 033, 044, 055, 066, 077,
+    088, 099, 0AA, 0BB, 0CC, 0DD, 0EE, 0FF,
+    101, 110, 123, 132, 145, 154, 167, 176,
+    189, 198, 1AB, 1BA, 1CD, 1DC, 1EF, 1FE,
+    202, 213, 220, 231, 246, 257, 264, 275,
+    28A, 29B, 2A8, 2B9, 2CE, 2DF, 2EC, 2FD,
+    303, 312, 321, 330, 347, 356, 365, 374,
+    38B, 39A, 3A9, 3B8, 3CF, 3DE, 3ED, 3FC,
+    404, 415, 426, 437, 440, 451, 462, 473,
+    48C, 49D, 4AE, 4BF, 4C8, 4D9, 4EA, 4FB,
+    505, 514, 527, 536, 541, 550, 563, 572,
+    58D, 59C, 5AF, 5BE, 5C9, 5D8, 5EB, 5FA,
+    606, 617, 624, 635, 642, 653, 660, 671,
+    68E, 69F, 6AC, 6BD, 6CA, 6DB, 6E8, 6F9,
+    707, 716, 725, 734, 743, 752, 761, 770,
+    78F, 79E, 7AD, 7BC, 7CB, 7DA, 7E9, 7F8,
+    808, 819, 82A, 83B, 84C, 85D, 86E, 87F,
+    880, 891, 8A2, 8B3, 8C4, 8D5, 8E6, 8F7,
+    909, 918, 92B, 93A, 94D, 95C, 96F, 97E,
+    981, 990, 9A3, 9B2, 9C5, 9D4, 9E7, 9F6,
+    A0A, A1B, A28, A39, A4E, A5F, A6C, A7D,
+    A82, A93, AA0, AB1, AC6, AD7, AE4, AF5,
+    B0B, B1A, B29, B38, B4F, B5E, B6D, B7C,
+    B83, B92, BA1, BB0, BC7, BD6, BE5, BF4,
+    C0C, C1D, C2E, C3F, C48, C59, C6A, C7B,
+    C84, C95, CA6, CB7, CC0, CD1, CE2, CF3,
+    D0D, D1C, D2F, D3E, D49, D58, D6B, D7A,
+    D85, D94, DA7, DB6, DC1, DD0, DE3, DF2,
+    E0E, E1F, E2C, E3D, E4A, E5B, E68, E79,
+    E86, E97, EA4, EB5, EC2, ED3, EE0, EF1,
+    F0F, F1E, F2D, F3C, F4B, F5A, F69, F78,
+    F87, F96, FA5, FB4, FC3, FD2, FE1, FF0
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Internal bitwise shift functions}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_shl:nn, \@@_shl:no, \@@_shl:oo, \@@_shl:of, \@@_shl:fo, \@@_shl:ff
+%   }
+%   Bitwise left shift operation.
+%    \begin{macrocode}
+\cs_new:Npn \@@_shl:nn #1 #2
+  { \@@_shl:ww #1 #2 }
+\cs_generate_variant:Nn \@@_shl:nn { no , oo , of , fo , ff }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_shl:ww
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w #2
+  {
+    \if_case:w "#2 \exp_stop_f:
+         \exp_after:wN \@@_shl_a:ww
+    \or: \exp_after:wN \@@_shl_b:ww
+    \or: \exp_after:wN \@@_shl_c:ww
+    \or: \exp_after:wN \@@_shl_d:ww
+    \or: \exp_after:wN \@@_shl_a:ww
+    \or: \exp_after:wN \@@_shl_b:ww
+    \or: \exp_after:wN \@@_shl_c:ww
+    \or: \exp_after:wN \@@_shl_d:ww
+    \or: \exp_after:wN \@@_shl_a:ww
+    \or: \exp_after:wN \@@_shl_b:ww
+    \or: \exp_after:wN \@@_shl_c:ww
+    \or: \exp_after:wN \@@_shl_d:ww
+    \or: \exp_after:wN \@@_shl_a:ww
+    \or: \exp_after:wN \@@_shl_b:ww
+    \or: \exp_after:wN \@@_shl_c:ww
+    \or: \exp_after:wN \@@_shl_d:ww
+    \fi:
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w #2
+  }
+\cs_new:Npn \@@_shl_a:ww
+  { \@@_shl_ii:ww }
+\cs_new:Npn \@@_shl_b:ww
+  { \@@_shl_i:NnNww 1 {} 0 }
+\cs_new:Npn \@@_shl_c:ww
+  { \@@_shl_i:NnNww 2 {} 0 }
+\cs_new:Npn \@@_shl_d:ww
+  { \@@_shl_i:NnNww 3 {} 0 }
+\cs_new:Npn \@@_shl_i:NnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4
+  {
+    \if_meaning:w * #4
+      \exp_after:wN \@@_shl_i_s:NnNww
+    \else:
+      \exp_after:wN \@@_shl_i_x:NnNww
+    \fi:
+      #1 {#2} #3
+      \s_@@ \@@_chk:w #4
+  }
+\cs_new:Npn \@@_shl_i_s:NnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4 ;
+  {
+    \if_meaning:w 0 #3
+      \exp_after:wN \use_i:nn
+    \else:
+      \exp_after:wN \use:nn
+    \fi:
+      { \@@_shl_ii:ww \s_@@ \@@_chk:w #2 } {#3} * ;
+  }
+\cs_new:Npn \@@_shl_i_x:NnNww #1 #2 #3
+      \s_@@ \@@_chk:w #4
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_shl_i_x:NNNnww
+      \cs:w c_@@_shl_ #1 #3 #4 _tl \cs_end:
+      #1 {#2}
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_shl_i_x:NNNnww #1 #2 #3 #4
+  { \@@_shl_i:NnNww #3 { #4 #2 } #1 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_shl_ii:ww
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w #2
+  {
+    \if_case:w "#2 \exp_stop_f:
+         \exp_after:wN \@@_shl_ii_a:ww
+    \or: \exp_after:wN \@@_shl_ii_a:ww
+    \or: \exp_after:wN \@@_shl_ii_a:ww
+    \or: \exp_after:wN \@@_shl_ii_a:ww
+    \or: \exp_after:wN \@@_shl_ii_b:ww
+    \or: \exp_after:wN \@@_shl_ii_b:ww
+    \or: \exp_after:wN \@@_shl_ii_b:ww
+    \or: \exp_after:wN \@@_shl_ii_b:ww
+    \or: \exp_after:wN \@@_shl_ii_c:ww
+    \or: \exp_after:wN \@@_shl_ii_c:ww
+    \or: \exp_after:wN \@@_shl_ii_c:ww
+    \or: \exp_after:wN \@@_shl_ii_c:ww
+    \or: \exp_after:wN \@@_shl_ii_d:ww
+    \or: \exp_after:wN \@@_shl_ii_d:ww
+    \or: \exp_after:wN \@@_shl_ii_d:ww
+    \or: \exp_after:wN \@@_shl_ii_d:ww
+    \fi:
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w
+  }
+\cs_new:Npn \@@_shl_ii_a:ww
+  { \@@_shl_iii:ww }
+\cs_new:Npn \@@_shl_ii_b:ww
+  { \@@_shl_ii:nww { 0 } }
+\cs_new:Npn \@@_shl_ii_c:ww
+  { \@@_shl_ii:nww { 00 } }
+\cs_new:Npn \@@_shl_ii_d:ww
+  { \@@_shl_ii:nww { 000 } }
+\cs_new:Npn \@@_shl_ii:nww #1
+      \s_@@ \@@_chk:w
+  { \@@_shl_iii:ww \s_@@ \@@_chk:w #1 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_shl_iii:ww
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w #2 #3 ;
+  {
+    \if_meaning:w * #2
+      \exp_after:wN \@@_shl_iii_s:ww
+    \else:
+      \exp_after:wN \@@_shl_iii_x:ww
+    \fi:
+      \s_@@ \@@_chk:w #2 #3 ;
+      \s_@@ \@@_chk:w #1 ;
+  }
+\cs_new:Npn \@@_shl_iii_s:ww
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w #2 ;
+  { \s_@@ \@@_chk:w #2 ; }
+\cs_new:Npn \@@_shl_iii_x:ww
+      \s_@@ \@@_chk:w #1 ;
+  {
+    \if_predicate:w \@@_if_zero_p:n
+        { \s_@@ \@@_chk:w #1 ; }
+      \exp_after:wN \@@_shl_iii_s:ww
+    \else:
+      \exp_after:wN \@@_shl_iii_xx:ww
+    \fi:
+      \s_@@ \@@_chk:w #1 ;
+  }
+\cs_new:Npn \@@_shl_iii_xx:ww
+      \s_@@ \@@_chk:w #1 ;
+      \s_@@ \@@_chk:w
+  {
+    \exp_after:wN
+    \@@_shl_iii_x:ww
+      \exp:w \exp_end_continue_f:w
+      \@@_sub:no
+        { \s_@@ \@@_chk:w #1 ; }
+        { \c_one_biguint }
+      \s_@@ \@@_chk:w 0000
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3 #4 #5
+  { \tl_const:cn { c_@@_shl_ #1 #2 #3 _tl } { #4 #5 } }
+\clist_map_inline:nn
+  {
+    10000, 10102, 10204, 10306, 10408, 1050A, 1060C, 1070E,
+    10810, 10912, 10A14, 10B16, 10C18, 10D1A, 10E1C, 10F1E,
+    11001, 11103, 11205, 11307, 11409, 1150B, 1160D, 1170F,
+    11811, 11913, 11A15, 11B17, 11C19, 11D1B, 11E1D, 11F1F,
+    20000, 20104, 20208, 2030C, 20410, 20514, 20618, 2071C,
+    20820, 20924, 20A28, 20B2C, 20C30, 20D34, 20E38, 20F3C,
+    21001, 21105, 21209, 2130D, 21411, 21515, 21619, 2171D,
+    21821, 21925, 21A29, 21B2D, 21C31, 21D35, 21E39, 21F3D,
+    22002, 22106, 2220A, 2230E, 22412, 22516, 2261A, 2271E,
+    22822, 22926, 22A2A, 22B2E, 22C32, 22D36, 22E3A, 22F3E,
+    23003, 23107, 2320B, 2330F, 23413, 23517, 2361B, 2371F,
+    23823, 23927, 23A2B, 23B2F, 23C33, 23D37, 23E3B, 23F3F,
+    30000, 30108, 30210, 30318, 30420, 30528, 30630, 30738,
+    30840, 30948, 30A50, 30B58, 30C60, 30D68, 30E70, 30F78,
+    31001, 31109, 31211, 31319, 31421, 31529, 31631, 31739,
+    31841, 31949, 31A51, 31B59, 31C61, 31D69, 31E71, 31F79,
+    32002, 3210A, 32212, 3231A, 32422, 3252A, 32632, 3273A,
+    32842, 3294A, 32A52, 32B5A, 32C62, 32D6A, 32E72, 32F7A,
+    33003, 3310B, 33213, 3331B, 33423, 3352B, 33633, 3373B,
+    33843, 3394B, 33A53, 33B5B, 33C63, 33D6B, 33E73, 33F7B,
+    34004, 3410C, 34214, 3431C, 34424, 3452C, 34634, 3473C,
+    34844, 3494C, 34A54, 34B5C, 34C64, 34D6C, 34E74, 34F7C,
+    35005, 3510D, 35215, 3531D, 35425, 3552D, 35635, 3573D,
+    35845, 3594D, 35A55, 35B5D, 35C65, 35D6D, 35E75, 35F7D,
+    36006, 3610E, 36216, 3631E, 36426, 3652E, 36636, 3673E,
+    36846, 3694E, 36A56, 36B5E, 36C66, 36D6E, 36E76, 36F7E,
+    37007, 3710F, 37217, 3731F, 37427, 3752F, 37637, 3773F,
+    37847, 3794F, 37A57, 37B5F, 37C67, 37D6F, 37E77, 37F7F
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_shr:nn, \@@_shr:no, \@@_shr:oo, \@@_shr:of, \@@_shr:fo, \@@_shr:ff
+%   }
+%   Bitwise right shift operation.
+%    \begin{macrocode}
+\cs_new:Npn \@@_shr:nn #1 #2
+  {
+    \if_predicate:w \@@_if_zero_p:n {#1}
+      \exp_after:wN \use_i:nn
+    \else:
+      \if_predicate:w \@@_if_zero_p:n {#2}
+        \exp_after:wN \exp_after:wN \exp_after:wN \use_i:nn
+      \else:
+        \exp_after:wN \exp_after:wN \exp_after:wN \@@_shr_aux:nn
+      \fi
+    \fi
+      {#1} {#2}
+  }
+\cs_generate_variant:Nn \@@_shr:nn { no , oo , of , fo , ff }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_shr_aux:nn #1 #2
+  { \@@_shr_aux:ww #2 #1 }
+\cs_new:Npn \@@_shr_aux:ww
+      \s_@@ \@@_chk:w #1 #2
+  {
+    \if_meaning:w #2 *
+      \exp_after:wN \@@_shr_ii:Nww
+    \else:
+      \exp_after:wN \@@_shr_i:Nww
+    \fi:
+      #1 \s_@@ \@@_chk:w #2
+  }
+\cs_new:Npn \@@_shr_i:Nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3 ;
+  {
+    \exp_args:Nf \@@_shr_i:nNw
+      {
+        \@@_sub:no
+          { \s_@@ \@@_chk:w #2 ; }
+          \c_one_biguint
+      }
+      #1
+      #3 * * * * ;
+  }
+\cs_new:Npn \@@_shr_i:nNw #1 #2
+      #3 #4 #5 #6 #7 * #8 ;
+  {
+    \if_meaning:w \q_@@ #7 \q_@@
+      \exp_after:wN \@@_shr_i_z:nNw
+    \else:
+      \exp_after:wN \@@_shr_i_x:nNw
+    \fi:
+      {#1} #2 #7 ;
+  }
+\cs_new:Npn \@@_shr_i_z:nNw #1 #2 #3 ;
+  { \c_zero_biguint }
+\cs_new:Npn \@@_shr_i_x:nNw #1 #2 #3 ;
+  {
+    \if_predicate:w \@@_if_zero_p:n {#1}
+      \exp_after:wN \@@_shr_ii:Nww
+    \else:
+      \exp_after:wN \@@_shr_i:Nww
+    \fi:
+      #2 #1 \s_@@ \@@_chk:w #3 * ;
+  }
+\cs_new:Npn \@@_shr_ii:Nww #1
+      \s_@@ \@@_chk:w #2 ;
+      \s_@@ \@@_chk:w #3 ;
+  {
+    \if_case:w "#1 \exp_stop_f:
+         \exp_after:wN \@@_shr_ii_a:Nw
+    \or: \exp_after:wN \@@_shr_ii_a:Nw
+    \or: \exp_after:wN \@@_shr_ii_a:Nw
+    \or: \exp_after:wN \@@_shr_ii_a:Nw
+    \or: \exp_after:wN \@@_shr_ii_b:Nw
+    \or: \exp_after:wN \@@_shr_ii_b:Nw
+    \or: \exp_after:wN \@@_shr_ii_b:Nw
+    \or: \exp_after:wN \@@_shr_ii_b:Nw
+    \or: \exp_after:wN \@@_shr_ii_c:Nw
+    \or: \exp_after:wN \@@_shr_ii_c:Nw
+    \or: \exp_after:wN \@@_shr_ii_c:Nw
+    \or: \exp_after:wN \@@_shr_ii_c:Nw
+    \or: \exp_after:wN \@@_shr_ii_d:Nw
+    \or: \exp_after:wN \@@_shr_ii_d:Nw
+    \or: \exp_after:wN \@@_shr_ii_d:Nw
+    \or: \exp_after:wN \@@_shr_ii_d:Nw
+    \fi:
+      #1
+      #3 * * * ;
+  }
+\cs_new:Npn \@@_shr_ii_a:Nw #1
+      #2 * #3 ;
+  { \@@_shr_iii:Nw #1 #2 * ; }
+\cs_new:Npn \@@_shr_ii_b:Nw #1
+      #2 #3 * #4 ;
+  {
+    \if_meaning:w \q_@@ #3 \q_@@
+      \exp_after:wN \@@_shr_ii_z:Nw
+    \else:
+      \exp_after:wN \@@_shr_iii:Nw
+    \fi:
+      #1 #3 * ;
+  }
+\cs_new:Npn \@@_shr_ii_c:Nw #1
+      #2 #3 #4 * #5 ;
+  {
+    \if_meaning:w \q_@@ #4 \q_@@
+      \exp_after:wN \@@_shr_ii_z:Nw
+    \else:
+      \exp_after:wN \@@_shr_iii:Nw
+    \fi:
+      #1 #4 * ;
+  }
+\cs_new:Npn \@@_shr_ii_d:Nw #1
+      #2 #3 #4 #5 * #6 ;
+  {
+    \if_meaning:w \q_@@ #5 \q_@@
+      \exp_after:wN \@@_shr_ii_z:Nw
+    \else:
+      \exp_after:wN \@@_shr_iii:Nw
+    \fi:
+      #1 #5 * ;
+  }
+\cs_new:Npn \@@_shr_ii_z:Nw #1 #2 ;
+  { \c_zero_biguint }
+\cs_new:Npn \@@_shr_iii:Nw #1 #2 ;
+  {
+    \if_case:w "#1 \exp_stop_f:
+         \exp_after:wN \@@_shr_iii_a:n
+    \or: \exp_after:wN \@@_shr_iii_b:n
+    \or: \exp_after:wN \@@_shr_iii_c:n
+    \or: \exp_after:wN \@@_shr_iii_d:n
+    \or: \exp_after:wN \@@_shr_iii_a:n
+    \or: \exp_after:wN \@@_shr_iii_b:n
+    \or: \exp_after:wN \@@_shr_iii_c:n
+    \or: \exp_after:wN \@@_shr_iii_d:n
+    \or: \exp_after:wN \@@_shr_iii_a:n
+    \or: \exp_after:wN \@@_shr_iii_b:n
+    \or: \exp_after:wN \@@_shr_iii_c:n
+    \or: \exp_after:wN \@@_shr_iii_d:n
+    \or: \exp_after:wN \@@_shr_iii_a:n
+    \or: \exp_after:wN \@@_shr_iii_b:n
+    \or: \exp_after:wN \@@_shr_iii_c:n
+    \or: \exp_after:wN \@@_shr_iii_d:n
+    \fi:
+      { \s_@@ \@@_chk:w #2 ; }
+  }
+\cs_new:Npn \@@_shr_iii_a:n #1
+  {#1}
+\cs_new:Npn \@@_shr_iii_b:n #1
+  {
+    \exp_args:Nf \@@_shr_iii_end:n
+      {
+        \@@_shl:nn {#1}
+          { \s_@@ \@@_chk:w 3 * ; }
+      }
+  }
+\cs_new:Npn \@@_shr_iii_c:n #1
+  {
+    \exp_args:Nf \@@_shr_iii_end:n
+      {
+        \@@_shl:nn {#1}
+          { \s_@@ \@@_chk:w 2 * ; }
+      }
+  }
+\cs_new:Npn \@@_shr_iii_d:n #1
+  {
+    \exp_args:Nf \@@_shr_iii_end:n
+      {
+        \@@_shl:nn {#1}
+          { \s_@@ \@@_chk:w 1 * ; }
+      }
+  }
+\cs_new:Npn \@@_shr_iii_end:n #1
+  { \@@_shr_iii_end:w #1 }
+\cs_new:Npn \@@_shr_iii_end:w
+    \s_@@ \@@_chk:w #1 #2 ;
+  {
+    \if_meaning:w * #2
+      \exp_after:wN \use:nn
+    \else:
+      \exp_after:wN \use_i:nn
+    \fi:
+      { \s_@@ \@@_chk:w } { 0 } #2 ;
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Internal format functions}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_to_Hex:n, \@@_to_Hex:o, \@@_to_Hex:f,
+%   }
+%   Format to hexadecimal.
+%    \begin{macrocode}
+\cs_new:Npn \@@_to_Hex:n #1
+  { \@@_to_Hex:nw {} #1 }
+\cs_generate_variant:Nn \@@_to_Hex:n { o , f }
+\cs_new:Npn \@@_to_Hex:nw #1 \s_@@ \@@_chk:w #2
+  {
+    \if_meaning:w * #2
+      \exp_after:wN \@@_to_Hex_end:nw
+    \else:
+      \exp_after:wN \@@_to_Hex_aux:nw
+    \fi:
+    {#1} \s_@@ \@@_chk:w #2
+  }
+\cs_new:Npn \@@_to_Hex_end:nw #1 \s_@@ \@@_chk:w #2 ;
+  { #1 }
+\cs_new:Npn \@@_to_Hex_aux:nw #1 \s_@@ \@@_chk:w #2
+  { \@@_to_Hex:nw { #2 #1 } \s_@@ \@@_chk:w }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_to_dec:n, \@@_to_dec:o, \@@_to_dec:f,
+%   }
+%   Format to decimal.
+%    \begin{macrocode}
+\cs_new:Npn \@@_to_dec:n #1
+  {
+    \exp_after:wN
+    \@@_to_dec:w
+    \exp:w \exp_end_continue_f:w
+      \@@_to_Hex:n {#1}
+      \q_@@
+  }
+\cs_generate_variant:Nn \@@_to_dec:n { o , f }
+\cs_new:Npn \@@_to_dec:w #1
+  { \@@_to_dec:nw {} #1 }
+\cs_new:Npn \@@_to_dec:nw #1 #2
+  {
+    \if_meaning:w \q_@@ #2
+      \exp_after:wN \@@_to_dec_final:Nnww
+    \else:
+      \exp_after:wN \@@_to_dec_loop:Nnww
+    \fi:
+     #2 {} #1 \q_@@
+  }
+\cs_new:Npn \@@_to_dec_final:Nnww #1 #2 #3 \q_@@
+  { \@@_to_dec_final:nw {} #3 \q_@@ }
+\cs_new:Npn \@@_to_dec_final:nw #1 #2
+  {
+    \if_meaning:w \q_@@ #2
+      \exp_after:wN \@@_to_dec_final_end:nw
+    \else:
+      \exp_after:wN \@@_to_dec_final_loop:nw
+    \fi:
+     {#1} #2
+  }
+\cs_new:Npn \@@_to_dec_final_end:nw #1 #2
+  { #1 }
+\cs_new:Npn \@@_to_dec_final_loop:nw #1 #2
+  { \@@_to_dec_final:nw { #2 #1 } }
+\cs_new:Npn \@@_to_dec_loop:Nnww #1 #2 #3
+  {
+    \if_meaning:w \q_@@ #3
+      \exp_after:wN \@@_to_dec_loop_final:NNnw
+    \else:
+      \exp_after:wN \@@_to_dec_loop_i:NNnww
+    \fi:
+      #3 #1 {#2}
+  }
+\cs_new:Npn \@@_to_dec_loop_final:NNnw #1 #2 #3
+  {
+    \exp_args:Nf
+    \@@_to_dec_loop_final:nnww
+      {
+        \if_case:w "#2 \exp_stop_f:
+             \exp_after:wN 0
+        \or: \exp_after:wN 1
+        \or: \exp_after:wN 2
+        \or: \exp_after:wN 3
+        \or: \exp_after:wN 4
+        \or: \exp_after:wN 5
+        \or: \exp_after:wN 6
+        \or: \exp_after:wN 7
+        \or: \exp_after:wN 8
+        \or: \exp_after:wN 9
+        \or: \exp_after:wN 0 \exp_after:wN 1
+        \or: \exp_after:wN 1 \exp_after:wN 1
+        \or: \exp_after:wN 2 \exp_after:wN 1
+        \or: \exp_after:wN 3 \exp_after:wN 1
+        \or: \exp_after:wN 4 \exp_after:wN 1
+        \or: \exp_after:wN 5 \exp_after:wN 1
+        \fi:
+      }
+      {#3}
+  }
+\cs_new:Npn \@@_to_dec_loop_final:nnww #1 #2
+  { \@@_to_dec:nw { #2 #1 } }
+\cs_new:Npn \@@_to_dec_loop_i:NNnww #1 #2 #3
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_to_dec_loop_ii:NNnww
+      \cs:w c_@@_to_dec_ #1 #2 _tl \cs_end:
+      {#3}
+  }
+\cs_new:Npn \@@_to_dec_loop_ii:NNnww #1 #2 #3
+  { \@@_to_dec_loop:Nnww #1 { #3 #2 } }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3 #4
+  { \tl_const:cn { c_@@_to_dec_ #1 #2 _tl } { #3 #4 } }
+\clist_map_inline:nn
+  {
+    0000, 0101, 0202, 0303, 0404, 0505, 0606, 0707,
+    0808, 0909, 0A10, 0B11, 0C12, 0D13, 0E14, 0F15,
+    1016, 1117, 1218, 1319, 1420, 1521, 1622, 1723,
+    1824, 1925, 1A26, 1B27, 1C28, 1D29, 1E30, 1F31,
+    2032, 2133, 2234, 2335, 2436, 2537, 2638, 2739,
+    2840, 2941, 2A42, 2B43, 2C44, 2D45, 2E46, 2F47,
+    3048, 3149, 3250, 3351, 3452, 3553, 3654, 3755,
+    3856, 3957, 3A58, 3B59, 3C60, 3D61, 3E62, 3F63,
+    4064, 4165, 4266, 4367, 4468, 4569, 4670, 4771,
+    4872, 4973, 4A74, 4B75, 4C76, 4D77, 4E78, 4F79,
+    5080, 5181, 5282, 5383, 5484, 5585, 5686, 5787,
+    5888, 5989, 5A90, 5B91, 5C92, 5D93, 5E94, 5F95,
+    6096, 6197, 6298, 6399, 64A0, 65A1, 66A2, 67A3,
+    68A4, 69A5, 6AA6, 6BA7, 6CA8, 6DA9, 6EB0, 6FB1,
+    70B2, 71B3, 72B4, 73B5, 74B6, 75B7, 76B8, 77B9,
+    78C0, 79C1, 7AC2, 7BC3, 7CC4, 7DC5, 7EC6, 7FC7,
+    80C8, 81C9, 82D0, 83D1, 84D2, 85D3, 86D4, 87D5,
+    88D6, 89D7, 8AD8, 8BD9, 8CE0, 8DE1, 8EE2, 8FE3,
+    90E4, 91E5, 92E6, 93E7, 94E8, 95E9, 96F0, 97F1,
+    98F2, 99F3, 9AF4, 9BF5, 9CF6, 9DF7, 9EF8, 9FF9
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Internal convertion functions}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_from_Hex:n, \@@_from_Hex:o, \@@_from_Hex:f,
+%   }
+%   Convert from hexadecimal number.
+%    \begin{macrocode}
+\cs_new:Npn \@@_from_Hex:n #1
+  { \@@_from_Hex:w #1 \q_@@ }
+\cs_generate_variant:Nn \@@_from_Hex:n { o , f }
+\cs_new:Npn \@@_from_Hex:w #1
+  {
+    \if_meaning:w 0 #1
+      \exp_after:wN \@@_from_Hex_zero:w
+    \else:
+      \exp_after:wN \@@_from_Hex_i:w
+    \fi:
+    #1
+  }
+\cs_new:Npn \@@_from_Hex_zero:w #1
+  { \@@_from_Hex:w }
+\cs_new:Npn \@@_from_Hex_i:w
+  { \@@_from_Hex_ii:nw {} }
+\cs_new:Npn \@@_from_Hex_ii:nw #1 #2
+  {
+    \if_meaning:w \q_@@ #2
+      \exp_after:wN \@@_from_Hex_end:nw
+    \else:
+      \exp_after:wN \@@_from_Hex_iii:nw
+    \fi:
+    {#1} #2
+  }
+\cs_new:Npn \@@_from_Hex_iii:nw #1 #2
+  {
+    \exp_args:Nf \@@_from_Hex_ii:nw
+      {
+        \if_predicate:w \@@_from_Hex_if_hex_p:N #2
+          \exp_after:wN \@@_from_Hex_ok:N
+        \else:
+          \exp_after:wN \@@_from_Hex_error:N
+        \fi:
+          #2
+        #1
+      }
+  }
+\cs_new:Npn \@@_from_Hex_if_hex_p:N #1
+  {
+    \exp_after:wN \if_meaning:w \exp_after:wN
+        \q_@@ \romannumeral -"0 #1 \exp_stop_f: \q_@@
+      \exp_after:wN \c_true_bool
+    \else:
+      \exp_after:wN \c_false_bool
+    \fi:
+  }
+\cs_new:Npn \@@_from_Hex_ok:N #1
+  {
+    \if_case:w "#1 \exp_stop_f:
+         \exp_after:wN 0
+    \or: \exp_after:wN 1
+    \or: \exp_after:wN 2
+    \or: \exp_after:wN 3
+    \or: \exp_after:wN 4
+    \or: \exp_after:wN 5
+    \or: \exp_after:wN 6
+    \or: \exp_after:wN 7
+    \or: \exp_after:wN 8
+    \or: \exp_after:wN 9
+    \or: \exp_after:wN A
+    \or: \exp_after:wN B
+    \or: \exp_after:wN C
+    \or: \exp_after:wN D
+    \or: \exp_after:wN E
+    \or: \exp_after:wN F
+    \fi:
+  }
+\cs_new:Npn \@@_from_Hex_error:N #1
+  { \msg_expandable_error:nnn { biguint } { unknown-word } {#1} }
+\cs_new:Npn \@@_from_Hex_end:nw #1 #2
+  {
+    \if_meaning:w \q_@@ #1 \q_@@
+      \exp_after:wN \use:nn
+    \else:
+      \exp_after:wN \use_i:nn
+    \fi:
+    { \s_@@ \@@_chk:w #1 } { 0 } * ;
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_from_dec:n, \@@_from_dec:o, \@@_from_dec:f,
+%   }
+%   Convert from decimal number.
+%    \begin{macrocode}
+\cs_new:Npn \@@_from_dec:n #1
+  { \@@_from_dec_chk:nw {} #1 \q_@@ }
+\cs_generate_variant:Nn \@@_from_dec:n { o , f }
+\cs_new:Npn \@@_from_dec:w
+  { \@@_from_dec_chk:nw {} }
+\cs_new:Npn \@@_from_dec_chk:nw #1 #2
+  {
+    \if_meaning:w \q_@@ #2
+      \exp_after:wN \@@_from_dec_chk_q:Nn
+    \else:
+      \exp_after:wN \@@_from_dec_chk_x:Nnw
+    \fi:
+      #2 {#1}
+  }
+\cs_new:Npn \@@_from_dec_chk_x:Nnw #1
+  {
+    \if_predicate:w \@@_from_dec_if_digit_p:N #1
+      \exp_after:wN \@@_from_dec_chk_x_ok:Nnw
+    \else:
+      \exp_after:wN \@@_from_dec_chk_x_err:Nnw
+    \fi:
+      #1
+  }
+\cs_new:Npn \@@_from_dec_if_digit_p:N #1
+  {
+    \exp_after:wN \if_meaning:w \exp_after:wN
+        \q_@@ \romannumeral -0 #1 \exp_stop_f: \q_@@
+      \exp_after:wN \c_true_bool
+    \else:
+      \exp_after:wN \c_false_bool
+    \fi:
+  }
+\cs_new:Npn \@@_from_dec_chk_x_ok:Nnw #1 #2
+  { \@@_from_dec_chk:nw { #2 #1 } }
+\cs_new:Npn \@@_from_dec_chk_x_err:Nnw #1 #2
+  {
+    \msg_expandable_error:nnn { biguint } { unknown-word } {#1}
+    \@@_from_dec_chk:nw {#2}
+  }
+\cs_new:Npn \@@_from_dec_chk_q:Nn #1 #2
+  {
+    \if_meaning:w \q_@@ #2 \q_@@
+      \exp_after:wN \@@_from_dec_chk_q_err:n
+    \else:
+      \exp_after:wN \@@_from_dec_chk_q_ok:n
+    \fi:
+      {#2}
+  }
+\cs_new:Npn \@@_from_dec_chk_q_ok:n #1
+  { \@@_from_dec:nw {} #1 \q_@@ }
+\cs_new:Npn \@@_from_dec_chk_q_err:n #1
+  {
+    \msg_expandable_error:nn { biguint } { missing-number }
+    \c_zero_biguint
+  }
+\cs_new:Npn \@@_from_dec_unchecked:w
+  { \@@_from_dec:nw {} }
+\cs_new:Npn \@@_from_dec:nw #1 #2
+  {
+    \if_meaning:w \q_@@ #2
+      \exp_after:wN \@@_from_dec_final:Nnww
+    \else:
+      \exp_after:wN \@@_from_dec_loop:Nnww
+    \fi:
+     #2 {} #1 \q_@@
+  }
+\cs_new:Npn \@@_from_dec_final:Nnww #1 #2 #3 \q_@@
+  {
+    \if_meaning:w \q_@@ #3 \q_@@
+      \exp_after:wN \use:nn
+    \else:
+      \exp_after:wN \use_i:nn
+    \fi:
+    { \s_@@ \@@_chk:w #3 } { 0 } * ;
+  }
+\cs_new:Npn \@@_from_dec_loop:Nnww #1 #2 #3
+  {
+    \if_meaning:w \q_@@ #3
+      \exp_after:wN \@@_from_dec_loop_final:NNnw
+    \else:
+      \exp_after:wN \@@_from_dec_loop_i:NNnww
+    \fi:
+      #3 #1 {#2}
+  }
+\cs_new:Npn \@@_from_dec_loop_final:NNnw #1 #2
+  {
+    \if_meaning:w 0 #2
+      \exp_after:wN \@@_from_dec_loop_final_z:Nnw
+    \else:
+      \exp_after:wN \@@_from_dec_loop_final_x:Nnw
+    \fi:
+      #2
+  }
+\cs_new:Npn \@@_from_dec_loop_final_z:Nnw #1 #2
+  { \@@_from_dec:nw { #2 } }
+\cs_new:Npn \@@_from_dec_loop_final_x:Nnw #1 #2
+  { \@@_from_dec:nw { #2 #1 } }
+\cs_new:Npn \@@_from_dec_loop_i:NNnww #1 #2 #3
+  {
+    \exp_after:wN \exp_after:wN \exp_after:wN
+    \@@_from_dec_loop_ii:NNnww
+      \cs:w c_@@_from_dec_ #1 #2 _tl \cs_end:
+      {#3}
+  }
+\cs_new:Npn \@@_from_dec_loop_ii:NNnww #1 #2 #3
+  { \@@_from_dec_loop:Nnww #1 { #3 #2 } }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_tmp:w #1 #2 #3 #4
+  { \tl_const:cn { c_@@_from_dec_ #1 #2 _tl } { #3 #4 } }
+\clist_map_inline:nn
+  {
+    0000, 0101, 0202, 0303, 0404, 0505, 0606, 0707, 0808, 0909,
+    100A, 110B, 120C, 130D, 140E, 150F, 1610, 1711, 1812, 1913,
+    2014, 2115, 2216, 2317, 2418, 2519, 261A, 271B, 281C, 291D,
+    301E, 311F, 3220, 3321, 3422, 3523, 3624, 3725, 3826, 3927,
+    4028, 4129, 422A, 432B, 442C, 452D, 462E, 472F, 4830, 4931,
+    5032, 5133, 5234, 5335, 5436, 5537, 5638, 5739, 583A, 593B,
+    603C, 613D, 623E, 633F, 6440, 6541, 6642, 6743, 6844, 6945,
+    7046, 7147, 7248, 7349, 744A, 754B, 764C, 774D, 784E, 794F,
+    8050, 8151, 8252, 8353, 8454, 8555, 8656, 8757, 8858, 8959,
+    905A, 915B, 925C, 935D, 945E, 955F, 9660, 9761, 9862, 9963,
+    A064, A165, A266, A367, A468, A569, A66A, A76B, A86C, A96D,
+    B06E, B16F, B270, B371, B472, B573, B674, B775, B876, B977,
+    C078, C179, C27A, C37B, C47C, C57D, C67E, C77F, C880, C981,
+    D082, D183, D284, D385, D486, D587, D688, D789, D88A, D98B,
+    E08C, E18D, E28E, E38F, E490, E591, E692, E793, E894, E995,
+    F096, F197, F298, F399, F49A, F59B, F69C, F79D, F89E, F99F
+  }
+  {
+    \@@_tmp:w #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \@@_from:n, \@@_from:o, \@@_from:f,
+%   }
+%   Converting from number.
+%    \begin{macrocode}
+\cs_new:Npn \@@_from:n #1
+  { \@@_from:w #1 \q_@@ }
+\cs_new:Npn \@@_from:w #1
+  {
+    \if_meaning:w " #1
+      \exp_after:wN \@@_from_Hex:w
+    \else:
+      \exp_after:wN \@@_from_dec:w \exp_after:wN #1
+    \fi:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsection{Assigning values}
+%
+% \begin{macro}
+%   {
+%     \biguint_new:N, \biguint_new:c,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_new:N #1
+  { \cs_new_eq:NN #1 \c_zero_biguint }
+\cs_generate_variant:Nn \biguint_new:N { c }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_set:Nn, \biguint_set:cn,
+%     \biguint_set:Ne, \biguint_set:ce,
+%     \biguint_set:Nx, \biguint_set:cx,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_gset:Nn, \biguint_gset:cn,
+%     \biguint_gset:Ne, \biguint_gset:ce,
+%     \biguint_gset:Nx, \biguint_gset:cx,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_const:Nn, \biguint_const:cn,
+%     \biguint_const:Ne, \biguint_const:ce,
+%     \biguint_const:Nx, \biguint_const:cx,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_set:Nn #1 #2
+  { \tl_set:Nx #1 { \@@_from:n {#2} } }
+\cs_new_protected:Npn \biguint_gset:Nn #1 #2
+  { \tl_gset:Nx #1 { \@@_from:n {#2} } }
+\cs_new_protected:Npn \biguint_const:Nn #1 #2
+  { \tl_const:Nx #1 { \@@_from:n {#2} } }
+\cs_generate_variant:Nn \biguint_set:Nn   { c , Ne , ce , Nx , cx }
+\cs_generate_variant:Nn \biguint_gset:Nn  { c , Ne , ce , Nx , cx }
+\cs_generate_variant:Nn \biguint_const:Nn { c , Ne , ce , Nx , cx }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_set_eq:NN, \biguint_set_eq:cN,
+%     \biguint_set_eq:Nc, \biguint_set_eq:cc,
+%     \biguint_gset_eq:NN, \biguint_gset_eq:cN,
+%     \biguint_gset_eq:Nc, \biguint_gset_eq:cc,
+%   }
+%   Copying a big unsigned integer is the same as copying the
+%   underlying token list.
+%    \begin{macrocode}
+\cs_new_eq:NN \biguint_set_eq:NN  \tl_set_eq:NN
+\cs_new_eq:NN \biguint_gset_eq:NN \tl_gset_eq:NN
+\cs_generate_variant:Nn \biguint_set_eq:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gset_eq:NN { c , Nc , cc }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_zero:N, \biguint_zero:c,
+%     \biguint_gzero:N, \biguint_gzero:c,
+%   }
+%   Setting a big unsigned integer to zero: copy \cs{c_zero_biguint}.
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_zero:N #1
+  { \biguint_set_eq:NN #1 \c_zero_biguint }
+\cs_new_protected:Npn \biguint_gzero:N #1
+  { \biguint_gset_eq:NN #1 \c_zero_biguint }
+\cs_generate_variant:Nn \biguint_zero:N  { c }
+\cs_generate_variant:Nn \biguint_gzero:N { c }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_zero_new:N, \biguint_zero_new:c,
+%     \biguint_gzero_new:N, \biguint_gzero_new:c
+%   }
+%   Set the big unsigned integer to zero, or define it if needed.
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_zero_new:N #1
+  { \biguint_if_exist:NTF #1 { \biguint_zero:N #1 } { \biguint_new:N #1 } }
+\cs_new_protected:Npn \biguint_gzero_new:N #1
+  { \biguint_if_exist:NTF #1 { \biguint_gzero:N #1 } { \biguint_new:N #1 } }
+\cs_generate_variant:Nn \biguint_zero_new:N  { c }
+\cs_generate_variant:Nn \biguint_gzero_new:N { c }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[pTF]{\biguint_if_exist:N, \biguint_if_exist:c}
+%   Copies of the \texttt{cs} functions defined in \pkg{l3basics}.
+%    \begin{macrocode}
+\prg_new_eq_conditional:NNn \biguint_if_exist:N \cs_if_exist:N
+  { TF , T , F , p }
+\prg_new_eq_conditional:NNn \biguint_if_exist:c \cs_if_exist:c
+  { TF , T , F , p }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Updating values}
+%
+% \begin{macro}
+%   {
+%     \biguint_add:NN, \biguint_add:cN,
+%     \biguint_add:Nc, \biguint_add:cc,
+%     \biguint_gadd:NN, \biguint_gadd:cN,
+%     \biguint_gadd:Nc, \biguint_gadd:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_add:NNN, \biguint_add:ccc,
+%     \biguint_gadd:NNN, \biguint_gadd:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_add:NN #1 #2
+  { \tl_set:Nx #1 { \@@_add:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gadd:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_add:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_add:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gadd:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_add:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_add:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gadd:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_add:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_add:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gadd:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_sub:NN, \biguint_sub:cN,
+%     \biguint_sub:Nc, \biguint_sub:cc,
+%     \biguint_gsub:NN, \biguint_gsub:cN,
+%     \biguint_gsub:Nc, \biguint_gsub:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_sub:NNN, \biguint_sub:ccc,
+%     \biguint_gsub:NNN, \biguint_gsub:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_sub:NN #1 #2
+  { \tl_set:Nx #1 { \@@_sub:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gsub:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_sub:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_sub:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gsub:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_sub:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_sub:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gsub:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_sub:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_sub:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gsub:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_mul:NN, \biguint_mul:cN,
+%     \biguint_mul:Nc, \biguint_mul:cc,
+%     \biguint_gmul:NN, \biguint_gmul:cN,
+%     \biguint_gmul:Nc, \biguint_gmul:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_mul:NNN, \biguint_mul:ccc,
+%     \biguint_gmul:NNN, \biguint_gmul:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_mul:NN #1 #2
+  { \tl_set:Nx #1 { \@@_mul:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gmul:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_mul:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_mul:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gmul:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_mul:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_mul:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gmul:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_mul:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_mul:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gmul:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_bitand:NN, \biguint_bitand:cN,
+%     \biguint_bitand:Nc, \biguint_bitand:cc,
+%     \biguint_gbitand:NN, \biguint_gbitand:cN,
+%     \biguint_gbitand:Nc, \biguint_gbitand:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_bitand:NNN, \biguint_bitand:ccc,
+%     \biguint_gbitand:NNN, \biguint_gbitand:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_bitand:NN #1 #2
+  { \tl_set:Nx #1 { \@@_and:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gbitand:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_and:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_bitand:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gbitand:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_bitand:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_and:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gbitand:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_and:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_bitand:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gbitand:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_bitor:NN, \biguint_bitor:cN,
+%     \biguint_bitor:Nc, \biguint_bitor:cc,
+%     \biguint_gbitor:NN, \biguint_gbitor:cN,
+%     \biguint_gbitor:Nc, \biguint_gbitor:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_bitor:NNN, \biguint_bitor:ccc,
+%     \biguint_gbitor:NNN, \biguint_gbitor:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_bitor:NN #1 #2
+  { \tl_set:Nx #1 { \@@_or:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gbitor:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_or:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_bitor:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gbitor:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_bitor:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_or:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gbitor:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_or:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_bitor:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gbitor:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_bitxor:NN, \biguint_bitxor:cN,
+%     \biguint_bitxor:Nc, \biguint_bitxor:cc,
+%     \biguint_gbitxor:NN, \biguint_gbitxor:cN,
+%     \biguint_gbitxor:Nc, \biguint_gbitxor:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_bitxor:NNN, \biguint_bitxor:ccc,
+%     \biguint_gbitxor:NNN, \biguint_gbitxor:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_bitxor:NN #1 #2
+  { \tl_set:Nx #1 { \@@_xor:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gbitxor:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_xor:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_bitxor:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gbitxor:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_bitxor:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_xor:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gbitxor:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_xor:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_bitxor:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gbitxor:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_shl:NN, \biguint_shl:cN,
+%     \biguint_shl:Nc, \biguint_shl:cc,
+%     \biguint_gshl:NN, \biguint_gshl:cN,
+%     \biguint_gshl:Nc, \biguint_gshl:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_shl:NNN, \biguint_shl:ccc,
+%     \biguint_gshl:NNN, \biguint_gshl:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_shl:NN #1 #2
+  { \tl_set:Nx #1 { \@@_shl:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gshl:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_shl:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_shl:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gshl:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_shl:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_shl:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gshl:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_shl:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_shl:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gshl:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_shr:NN, \biguint_shr:cN,
+%     \biguint_shr:Nc, \biguint_shr:cc,
+%     \biguint_gshr:NN, \biguint_gshr:cN,
+%     \biguint_gshr:Nc, \biguint_gshr:cc,
+%   }
+% \begin{macro}
+%   {
+%     \biguint_shr:NNN, \biguint_shr:ccc,
+%     \biguint_gshr:NNN, \biguint_gshr:ccc,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_shr:NN #1 #2
+  { \tl_set:Nx #1 { \@@_shr:oo {#1} {#2} } }
+\cs_new_protected:Npn \biguint_gshr:NN #1 #2
+  { \tl_gset:Nx #1 { \@@_shr:oo {#1} {#2} } }
+\cs_generate_variant:Nn \biguint_shr:NN  { c , Nc , cc }
+\cs_generate_variant:Nn \biguint_gshr:NN { c , Nc , cc }
+\cs_new_protected:Npn \biguint_shr:NNN #1 #2 #3
+  { \tl_set:Nx #1 { \@@_shr:oo {#2} {#3} } }
+\cs_new_protected:Npn \biguint_gshr:NNN #1 #2 #3
+  { \tl_gset:Nx #1 { \@@_shr:oo {#2} {#3} } }
+\cs_generate_variant:Nn \biguint_shr:NNN  { ccc }
+\cs_generate_variant:Nn \biguint_gshr:NNN { ccc }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \biguint_show:N, \biguint_show:c,
+%     \biguint_log:N, \biguint_log:c,
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \biguint_show:N #1
+  { \tl_show:x { \token_to_str:N #1 = \biguint_to_tl:N #1 } }
+\cs_new_protected:Npn \biguint_log:N #1
+  { \tl_log:x { \token_to_str:N #1 = \biguint_to_tl:N #1 } }
+\cs_generate_variant:Nn \biguint_show:N { c }
+\cs_generate_variant:Nn \biguint_log:N  { c }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\c_maxint_biguint}
+%    \begin{macrocode}
+\biguint_const:Nx \c_maxint_biguint { " \int_to_Hex:n { \c_max_int } }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \l_tmpa_biguint, \l_tmpb_biguint,
+%     \g_tmpa_biguint, \g_tmpb_biguint,
+%   }
+%    \begin{macrocode}
+\biguint_new:N \l_tmpa_biguint
+\biguint_new:N \l_tmpb_biguint
+\biguint_new:N \g_tmpa_biguint
+\biguint_new:N \g_tmpb_biguint
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \begin{macro}[EXP]
+%   {
+%     \biguint_to_Hex:N, \biguint_to_Hex:c,
+%   }
+%    \begin{macrocode}
+\cs_new:Npn \biguint_to_Hex:N #1
+  { \@@_to_Hex:o {#1} }
+\cs_generate_variant:Nn \biguint_to_Hex:N { c }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \biguint_to_decimal:N, \biguint_to_decimal:c,
+%   }
+%    \begin{macrocode}
+\cs_new:Npn \biguint_to_decimal:N #1
+  { \@@_to_dec:o {#1} }
+\cs_generate_variant:Nn \biguint_to_decimal:N { c }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \biguint_to_tl:N, \biguint_to_tl:c,
+%   }
+%    \begin{macrocode}
+\cs_new:Npn \biguint_to_tl:N #1
+  {
+    \exp_after:wN "
+    \exp:w \exp_end_continue_f:w
+    \@@_to_Hex:o {#1}
+  }
+\cs_generate_variant:Nn \biguint_to_tl:N { c }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[EXP]
+%   {
+%     \biguint_use:N, \biguint_use:c,
+%   }
+%    \begin{macrocode}
+\cs_new_eq:NN \biguint_use:N \biguint_to_decimal:N
+\cs_new_eq:NN \biguint_use:c \biguint_to_decimal:c
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[pTF]
+%   {
+%     \biguint_if_zero:N, \biguint_if_zero:c,
+%     \biguint_if_odd:N , \biguint_if_odd:c ,
+%     \biguint_if_even:N, \biguint_if_even:c,
+%   }
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \biguint_if_zero:N #1 { p , T , F , TF }
+  {
+    \if_predicate:w \@@_if_zero_p:o {#1}
+      \prg_return_true:
+    \else:
+      \prg_return_false:
+    \fi:
+  }
+\prg_new_conditional:Npnn \biguint_if_odd:N #1 { p , T , F , TF }
+  {
+    \if_predicate:w \@@_if_odd_p:o {#1}
+      \prg_return_true:
+    \else:
+      \prg_return_false:
+    \fi:
+  }
+\prg_new_conditional:Npnn \biguint_if_even:N #1 { p , T , F , TF }
+  {
+    \if_predicate:w \@@_if_even_p:o {#1}
+      \prg_return_true:
+    \else:
+      \prg_return_false:
+    \fi:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[pTF]
+%   {
+%     \biguint_if_eq:NN, \biguint_if_eq:cN,
+%     \biguint_if_eq:Nc, \biguint_if_eq:cc,
+%     \biguint_if_lt:NN , \biguint_if_lt:cN ,
+%     \biguint_if_lt:Nc , \biguint_if_lt:cc ,
+%     \biguint_if_gt:NN, \biguint_if_gt:cN,
+%     \biguint_if_gt:Nc, \biguint_if_gt:cc,
+%   }
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \biguint_if_eq:NN #1 #2 { p , T , F , TF }
+  {
+    \if_predicate:w \@@_if_eq_p:oo {#1} {#2}
+      \prg_return_true:
+    \else:
+      \prg_return_false:
+    \fi:
+  }
+\prg_new_conditional:Npnn \biguint_if_lt:NN #1 #2 { p , T , F , TF }
+  {
+    \if_predicate:w \@@_if_lt_p:oo {#1} {#2}
+      \prg_return_true:
+    \else:
+      \prg_return_false:
+    \fi:
+  }
+\prg_new_conditional:Npnn \biguint_if_gt:NN #1 #2 { p , T , F , TF }
+  {
+    \if_predicate:w \@@_if_gt_p:oo {#1} {#2}
+      \prg_return_true:
+    \else:
+      \prg_return_false:
+    \fi:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+%    \begin{macrocode}
+\msg_new:nnn { biguint } { misused }
+  { A~big~unsigned~integer~with~value~'#1'~was~misused. }
+\msg_new:nnn { biguint } { underflow }
+  { An~underflow~occurred. }
+\msg_new:nnn { biguint } { unknown-word }
+  { Unknown~word~#1. }
+\msg_new:nnn { biguint } { missing-number }
+  { Missing~number,~treated~as~zero. }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</code>
+%    \end{macrocode}
+%
+%\end{implementation}
+%
+%\PrintIndex

@@ -1,0 +1,115 @@
+%
+% Copyright (C) 2023 Yukimasa Morimi (h20y6m)
+%
+
+\ifdefined\documentclass
+  \input{regression-test.tex}
+  \documentclass{minimal}
+  \usepackage{biguint}
+\else
+  \input regression-test.tex\relax
+  \input biguint-generic.tex\relax
+\fi
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation , log-functions }
+\ExplSyntaxOff
+
+\START
+\ExplSyntaxOn
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\OMIT
+\cs_set:Npn \test:nn #1 #2
+  {
+    \biguint_set:Nn \l_tmpa_biguint {#1}
+    \biguint_set:Nn \l_tmpb_biguint {#2}
+    \biguint_add:NN \l_tmpa_biguint \l_tmpb_biguint
+    \TYPE { \biguint_to_tl:N \l_tmpa_biguint }
+  }
+\TIMO
+
+\TEST { biguint_add }
+  {
+    \test:nn { 0 } { 0 }
+    \test:nn { 0 } { 1 }
+    \test:nn { 1 } { 0 }
+    \test:nn { 1 } { 1 }
+    \test:nn { "F } { 1 }
+    \test:nn { "FF } { 1 }
+    \test:nn { "FFF } { 1 }
+    \test:nn { "FFFF } { 1 }
+    \test:nn { "FFFFFFFFFFFFFFFF } { 1 }
+    \test:nn { 1 } { "F }
+    \test:nn { 1 } { "FF }
+    \test:nn { 1 } { "FFF }
+    \test:nn { 1 } { "FFFF }
+    \test:nn { 1 } { "FFFFFFFFFFFFFFFF }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "1010101010101010101010101010101 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "2020202020202020202020202020202 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "3030303030303030303030303030303 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "4040404040404040404040404040404 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "5050505050505050505050505050505 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "6060606060606060606060606060606 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "7070707070707070707070707070707 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "8080808080808080808080808080808 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "9090909090909090909090909090909 }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "A0A0A0A0A0A0A0A0A0A0A0A0AAA0A0A }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0D }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E }
+    \test:nn { "102030405060708090A0B0C0D0E0F } { "F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F }
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\OMIT
+\cs_set:Npn \test:nn #1 #2
+  {
+    \biguint_set:Nn \l_tmpa_biguint {#1}
+    \biguint_set:Nn \l_tmpb_biguint {#2}
+    \biguint_sub:NN \l_tmpa_biguint \l_tmpb_biguint
+    \TYPE { \biguint_to_tl:N \l_tmpa_biguint }
+  }
+\TIMO
+
+\TEST { biguint_sub }
+  {
+    \test:nn { "0 } { "0 }
+    \test:nn { "1 } { "0 }
+    \test:nn { "1 } { "1 }
+    \test:nn { "10 } { "1 }
+    \test:nn { "100 } { "1 }
+    \test:nn { "1000 } { "1 }
+    \test:nn { "10000 } { "1 }
+    \test:nn { "10000000000000000 } { "1 }
+    \test:nn { "10000000000000000 } { "FFFFFFFFFFFFFFFF }
+    \test:nn { "10000000000000000 } { "10000000000000000 }
+    \test:nn { "FFFFFFFFFFFFFFFF } { "FFFFFFFFFFFFFFFF }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "1010101010101010101010101010101 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "2020202020202020202020202020202 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "3030303030303030303030303030303 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "4040404040404040404040404040404 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "5050505050505050505050505050505 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "6060606060606060606060606060606 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "7070707070707070707070707070707 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "8080808080808080808080808080808 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "9090909090909090909090909090909 }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "A0A0A0A0A0A0A0A0A0A0A0A0AAA0A0A }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "D0D0D0D0D0D0D0D0D0D0D0D0D0D0D0D }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0E }
+    \test:nn { "101112131415161718191A1B1C1D1E1F } { "F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F }
+  }
+
+\TEST { biguint_sub~underflow }
+  {
+    \test:nn { "0 } { "1 }
+    \test:nn { "10 } { "11 }
+    \test:nn { "1000 } { "1001 }
+    \test:nn { "1 } { "100000000 }
+  }
+
+\ExplSyntaxOff
+\END

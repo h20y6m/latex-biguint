@@ -1,0 +1,105 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: biguint_add
+============================================================
+"0
+"1
+"1
+"2
+"10
+"100
+"1000
+"10000
+"10000000000000000
+"10
+"100
+"1000
+"10000
+"10000000000000000
+"102030405060708090A0B0C0D0E0F10
+"2030405060708090A0B0C0D0E0F1011
+"30405060708090A0B0C0D0E0F101112
+"405060708090A0B0C0D0E0F10111213
+"5060708090A0B0C0D0E0F1011121314
+"60708090A0B0C0D0E0F101112131415
+"708090A0B0C0D0E0F10111213141516
+"8090A0B0C0D0E0F1011121314151617
+"90A0B0C0D0E0F101112131415161718
+"A0B0C0D0E0F10111213141516B71819
+"B0C0D0E0F101112131415161718191A
+"C0D0E0F101112131415161718191A1B
+"D0E0F101112131415161718191A1B1C
+"E0F101112131415161718191A1B1C1D
+"F101112131415161718191A1B1C1D1E
+============================================================
+============================================================
+TEST 2: biguint_sub
+============================================================
+"0
+"1
+"0
+"F
+"FF
+"FFF
+"FFFF
+"FFFFFFFFFFFFFFFF
+"1
+"0
+"0
+"F101112131415161718191A1B1C1D1E
+"E0F101112131415161718191A1B1C1D
+"D0E0F101112131415161718191A1B1C
+"C0D0E0F101112131415161718191A1B
+"B0C0D0E0F101112131415161718191A
+"A0B0C0D0E0F10111213141516171819
+"90A0B0C0D0E0F101112131415161718
+"8090A0B0C0D0E0F1011121314151617
+"708090A0B0C0D0E0F10111213141516
+"60708090A0B0C0D0E0F101111731415
+"5060708090A0B0C0D0E0F1011121314
+"405060708090A0B0C0D0E0F10111213
+"30405060708090A0B0C0D0E0F101112
+"2030405060708090A0B0C0D0E0F1011
+"102030405060708090A0B0C0D0E0F10
+============================================================
+============================================================
+TEST 3: biguint_sub underflow
+============================================================
+! Use of \??? doesn't match its definition.
+<argument> \???  
+                 ! Package biguint Error: An underflow occurred.
+l. ...  }
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+"0
+! Use of \??? doesn't match its definition.
+<argument> \???  
+                 ! Package biguint Error: An underflow occurred.
+l. ...  }
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+"0
+! Use of \??? doesn't match its definition.
+<argument> \???  
+                 ! Package biguint Error: An underflow occurred.
+l. ...  }
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+"0
+! Use of \??? doesn't match its definition.
+<argument> \???  
+                 ! Package biguint Error: An underflow occurred.
+l. ...  }
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+"0
+============================================================

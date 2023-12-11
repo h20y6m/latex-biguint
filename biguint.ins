@@ -1,0 +1,29 @@
+\iffalse meta-comment
+
+File: biguint.ins
+
+Copyright (c) 2023 Yukimasa Morimi (h20y6m)
+
+\fi
+
+\input l3docstrip %
+\askforoverwritefalse
+
+\preamble
+
+Copyright (c) 2023 Yukimasa Morimi (h20y6m)
+
+\endpreamble
+% stop docstrip adding \endinput
+\postamble
+\endpostamble
+
+\keepsilent
+
+\generate{
+  \file{biguint.sty}        {\from{biguint.dtx}{package}}
+  \file{biguint-generic.tex}{\from{biguint.dtx}{generic}}
+  \file{biguint-code.tex}   {\from{biguint.dtx}{code}}
+}
+
+\endbatchfile

@@ -1,0 +1,22 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: biguint_set
+============================================================
+! LaTeX Error: The variable \l_test_biguint has not been declared on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...  }
+This is a coding error.
+Checking is active, and you have tried do so something like:
+  \tl_set:Nn \l_test_biguint { ... }
+without first having:
+  \tl_new:N \l_test_biguint
+LaTeX will create the variable and continue.
+> \l_tmpa_biguint="234.
+> \l_tmpb_biguint="EA.
+> \l_tmpa_biguint="123.
+> \l_tmpb_biguint="7B.
+> \g_tmpa_biguint="123.
+> \g_tmpb_biguint="7B.
+============================================================

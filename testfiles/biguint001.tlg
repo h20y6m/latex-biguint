@@ -1,0 +1,55 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: biguint_new
+============================================================
+Defining \l_test_a_biguint on line ...
+"0
+Defining \g_test_b_biguint on line ...
+! LaTeX Error: Control sequence \g_test_b_biguint already defined.
+For immediate help type H <return>.
+ ...                                              
+l. ...  }
+This is a coding error.
+LaTeX has been asked to create a new control sequence '\g_test_b_biguint' but
+this name has already been used elsewhere.
+The current meaning is:
+  macro:->\s__biguint \__biguint_chk:w 0*;
+Defining \g_test_b_biguint on line ...
+============================================================
+============================================================
+TEST 2: biguint_const
+============================================================
+Defining \c_test_a_biguint on line ...
+"7B
+Defining \c_test_b_biguint on line ...
+"7B
+! LaTeX Error: Control sequence \c_test_b_biguint already defined.
+For immediate help type H <return>.
+ ...                                              
+l. ...  }
+This is a coding error.
+LaTeX has been asked to create a new control sequence '\c_test_b_biguint' but
+this name has already been used elsewhere.
+The current meaning is:
+  macro:->\s__biguint \__biguint_chk:w B7*;
+Defining \c_test_b_biguint on line ...
+============================================================
+============================================================
+TEST 3: biguint_zero
+============================================================
+"0
+"7B
+"0
+"0
+"7B
+"0
+============================================================
+============================================================
+TEST 4: biguint_const, long number
+============================================================
+Defining \c_test_c_biguint on line ...
+"7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFED
+Defining \c_test_d_biguint on line ...
+"7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFED
+============================================================
